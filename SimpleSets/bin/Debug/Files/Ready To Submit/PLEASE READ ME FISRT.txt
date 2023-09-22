@@ -1,0 +1,6 @@
+This project is based on an application.
+
+
+Please do not seperate the files as they are crucial for the application!!!!
+
+Open the simpleSet.exe which is on the root directory of this text file.
