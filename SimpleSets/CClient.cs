@@ -10,13 +10,18 @@ namespace SimpleSets
     {
         static void Main(string[] args)
         {
-
             //Set the window size
             SetWindow(1250, 700);
             DisplayWelcomeScreen();
+
+            //Shrink the window size
             SetWindow(800, 600);
             SetCollection<CSet> coll = new SetCollection<CSet>();
             LoadData(coll);
+
+            //Add set if there are currently nno sets
+            if (coll.Count == 0)
+                AddNewSet(coll);
             //DisplayWelcomeScreen();
             Menu(coll);
 
@@ -29,6 +34,7 @@ namespace SimpleSets
             do
             {
                 Console.Clear();
+                Console.ResetColor();
                 Console.WriteLine("MENU");
                 Console.WriteLine("=====\n\n");
                 DisplayCollection(collection);
@@ -38,42 +44,62 @@ namespace SimpleSets
                                 "\n\t3. Check for Element." +
                                 "\n\t4. Add new set of your choice." +
                                 "\n\t5. Remove a set." +
-                                "\n\t6. Learn more about sets." +
+                                "\n\t6. Clear all sets." +
+                                "\n\t7. Learn more about sets." +
                                 "\n\tX. Exit(Your current sets will be saved).");
                 Console.Write("\n\n\tOption : ");
                 string sOp = Console.ReadLine();
+                sOp = (string.IsNullOrEmpty(sOp) || string.IsNullOrWhiteSpace(sOp)) ? "P" : sOp;
                 cOption = sOp[0].ToString().ToUpper()[0];
                 switch (cOption)
                 {
                     case '1': PerFormSetOperations(collection);
                         break;
-                    case '2':CheckForeSubSets(collection);
+                    case '2': CheckForeSubSets(collection);
                         break;
-                    case '3':CheckForElement(collection);
+                    case '3': CheckForElement(collection);
                         break;
-                    case '4':AddNewSet(collection);
+                    case '4': AddNewSet(collection);
                         break;
                     case '5':
                         RemoveSet(collection);
                         break;
                     case '6':
+                        CleaAllSets(collection);
+                        break;
+                    case '7':
                         LearnMoreAboutSets();
                         break;
                     case 'X':
-                        Console.WriteLine("You have chosen an option to Exit the application" +
-                                        "\nPress R if you wish to return to the main menu or anykey to contine with the exit....");
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        Console.Write("\n\n\tYou have chosen an option to Exit the application" +
+                                        "\n\n\tPress R if you wish to return to the main menu or anykey to contine with the exit...");
                         char c = Console.ReadKey().KeyChar.ToString().ToUpper()[0];
                         if (c == 'R')
                             cOption = c;//Will return to the main menu.
                         break;
                     default:
                         DisplayError("Oops! You have chossen an incorrect option.");
-                        Console.WriteLine("\nPress any key to return to the main menu....");
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        Console.Write("\n\nPress any key to return to the main menu...");
                         Console.ReadKey();
                         break;
                 }//Switch
             } while (cOption != 'X');
         }//Menu
+
+        private static void CleaAllSets(SetCollection<CSet> collection)
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("\n\n\tWARNING: You are about to Clear everything!!\n\tOnce cleared you cannot reverse it.");
+            Console.ResetColor();
+            Console.Write("\n\tAre you sure about this(Y= Yes| N = No)? : ");
+            char opt = Console.ReadKey().KeyChar.ToString().ToUpper()[0];
+            if (opt == 'Y')
+                collection.ClearAll();
+        }//CleaAllSets
 
         private static void RemoveSet(SetCollection<CSet> collection)
         {
@@ -81,26 +107,16 @@ namespace SimpleSets
 
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\n\n\tWARNING: You are about to remove a set from the set collection!!\n\tOnce removed you cannot retrieve it.");
-            Console.WriteLine("\n\tIf you wish to cancel press \"0\" and hit \"Enter\"");
+            Console.WriteLine("\n\tIf you wish to cancel press \"0\"");
             Console.ResetColor();
 
             Console.Write("\n\n\tSet to be removed(choose from the above options) : ");
-            string sSet = Console.ReadLine();
-            if (string.IsNullOrEmpty(sSet) ||sSet == "")
-            {
-                DisplayError("Please choose something, try again.\nPress any key to retry......");
-                RemoveSet(collection);
-            }//if option was incorect
-
-            if (sSet[0] == '0')
+            char sSet = Console.ReadKey().KeyChar.ToString().ToUpper()[0];
+            if (sSet == '0')
                 return;
-            int i = (int)sSet[0].ToString().ToUpper()[0] - 65;
-            if(i< 0 || i >= collection.Count)
-            {
-                DisplayError("You have chosen an incorrect option, try again.\nPress any key to retry......");
-                RemoveSet(collection);
-            }//if option was incorect
-            //Remove the set
+            int i = (int)sSet - 65;
+            if (i < 0 || i >= collection.Count)
+                return;
             collection.RemoveAt(i);
         }//RemoveSet
 
@@ -111,35 +127,34 @@ namespace SimpleSets
                 Process.Start(Path.Combine(Directory.GetCurrentDirectory(), SetsInfo_FileName1));
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("A word document will open up shortly");
+                Console.WriteLine("A word document will open up shortly.");
             }
             else if (File.Exists(SetsInfo_FileName2))
             {
                 Process.Start(Path.Combine(Directory.GetCurrentDirectory(), SetsInfo_FileName2));
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("A pdf document will open up shortly");
+                Console.WriteLine("A pdf document will open up shortly.");
             }
             else
             {
                 DisplayError($"The file \"{SetsInfo_FileName1}\" was removed from the root destination.");
             }
-            Console.WriteLine("Press anykey to return to the main menu.....");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("\n\nPress any key to return to the main menu...");
             Console.ResetColor();
             Console.ReadKey();
         }//LearnMoreAboutSets
         private static void AddNewSet(SetCollection<CSet> collection)
         {
-            AddingNewSetRules();
+            DisplayNewSetRules();
             CSet set = Crashed("\n\n\tElement string : ");
             collection.Add(set);
 
 
-            Console.WriteLine("\n\n\tPress R to add another set or anykey to return to the main menu.....");
-            string s = Console.ReadLine();
-            if (s == "")
-                return;
-            if (s[0].ToString().ToUpper()[0] == 'R')
+            Console.WriteLine("\n\n\tPress R to add another set or anykey to return to the main menu...");
+            char s = Console.ReadKey().KeyChar.ToString().ToUpper()[0];
+            if (s == 'R')
                 AddNewSet(collection);
         }//AddNewSet
         private static CSet Crashed(string sPrompt, string sTryed = "")
@@ -157,9 +172,12 @@ namespace SimpleSets
             {
                 if(ex is ArgumentException)
                 {
-                    AddingNewSetRules();
+                    DisplayNewSetRules();
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(ex.Message);
+                    if (ex.Message == "Did not follow steps")
+                        Console.WriteLine("\n\n\tPlease follow the above steps to create a set!!!");
+                    else
+                        Console.WriteLine("\n\n"+ex.Message);
                     Console.ResetColor();
                     string d = "";
                     //For the sendKeys
@@ -176,10 +194,10 @@ namespace SimpleSets
                 }//end try
                 else
                 {
-                    DisplayError("Please follow the guidline.!!!");
-                    Console.WriteLine("Press any key to retry");
+                    DisplayError("Please follow the guideline!!!");
+                    Console.WriteLine("\n\n\nPress any key to retry");
                     Console.ReadKey();
-                    AddingNewSetRules();
+                    DisplayNewSetRules();
                     return Crashed(sPrompt);
                 }//end else
             }//exception
@@ -187,6 +205,7 @@ namespace SimpleSets
         private static void CheckForElement(SetCollection<CSet> collection)
         {
             Console.Clear();
+            Console.ResetColor();
             Console.WriteLine("\tCHECKING FOR ELEMENT");
             Console.WriteLine("\t===================");
             DisplayCollection(collection);
@@ -200,7 +219,8 @@ namespace SimpleSets
             if(sRead == "" || string.IsNullOrEmpty(sRead) || string.IsNullOrWhiteSpace(sRead))
             {
                 DisplayError("Please choose an option.");
-                Console.WriteLine("\nPress any key to try again....");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("\n\nPress any key to try again...");
                 Console.ReadKey();
                 CheckForElement(collection);
             }
@@ -209,7 +229,8 @@ namespace SimpleSets
             if (!(cOption == '1' || cOption == '2'))
             {
                 DisplayError("Oops! You have chossen an incorrect option.");
-                Console.WriteLine("\nPress any key to try again....");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("\n\nPress any key to try again...");
                 Console.ReadKey();
                 CheckForElement(collection);
             }//the option is invalid
@@ -230,17 +251,18 @@ namespace SimpleSets
                 Console.WriteLine("\n\n");
                 DisplayIsElementOf(collection[iY], collection[iX], isElement);
             }
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("\n\n\tPress R to repeat set operation or anykey to return to the main menu...");
+            char s = Console.ReadKey().KeyChar.ToString().ToUpper()[0];
 
-            Console.WriteLine("\n\n\tPress R to repeat set operation or anykey to return to the main menu.....");
-            string s = Console.ReadLine();
-
-            if (s[0].ToString().ToUpper()[0] == 'R')
+            if (s == 'R')
                 CheckForElement(collection);
 
         }//CheckForeElement
         private static void CheckForeSubSets(SetCollection<CSet> collection)
         {
             Console.Clear();
+            Console.ResetColor();
             Console.WriteLine("\tCHECKING FOR SUBSET");
             Console.WriteLine("===================");
             DisplayCollection(collection);
@@ -255,7 +277,8 @@ namespace SimpleSets
             if (sRead == "" || string.IsNullOrEmpty(sRead) || string.IsNullOrWhiteSpace(sRead))
             {
                 DisplayError("Please make selection.");
-                Console.WriteLine("\nPress any key to try again....");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("\n\nPress any key to try again....");
                 Console.ReadKey();
                 CheckForeSubSets(collection);
             }
@@ -263,7 +286,8 @@ namespace SimpleSets
             if (!(cOption == '1' || cOption == '2'))
             {
                 DisplayError("Oops! You have chossen an incorrect option.");
-                Console.WriteLine("\nPress any key to try again....");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("\n\nPress any key to try again...");
                 Console.ReadKey();
                 CheckForeSubSets(collection);
             }//the option is invalid
@@ -283,16 +307,16 @@ namespace SimpleSets
                 DisplayIsSubset(collection[iY], collection[iX], type);
             }
 
-            Console.WriteLine("\n\n\tPress R to repeat set operation or anykey to return to the main menu.....");
-            string s = Console.ReadLine();
-            if (string.IsNullOrEmpty(s))
-                return;
-            if (s[0].ToString().ToUpper()[0] == 'R')
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("\n\n\tPress R to repeat set operation or anykey to return to the main menu.....");
+            char s = Console.ReadKey().KeyChar.ToString().ToUpper()[0];
+            if (s == 'R')
                 CheckForeSubSets(collection);
         }//CheckForeSubSets
         private static void PerFormSetOperations(SetCollection<CSet> collection)
         {
             Console.Clear();
+            Console.ResetColor();
             Console.WriteLine("\tPERFORMING SET OPERATION");
             Console.WriteLine("\t========================");
             DisplayCollection(collection);
@@ -306,7 +330,8 @@ namespace SimpleSets
             if(string.IsNullOrEmpty(sRead) || string.IsNullOrWhiteSpace(sRead))
             {
                 DisplayError("Oops! You have chossen an incorrect option.");
-                Console.WriteLine("\nPress any key to try again....");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("\n\nPress any key to try again...");
                 Console.ReadKey();
                 PerFormSetOperations(collection);
             }
@@ -315,7 +340,8 @@ namespace SimpleSets
             if(!(cOption == '1' || cOption == '2' || cOption =='3' || cOption == '4'))
             {
                 DisplayError("Oops! You have chossen an incorrect option.");
-                Console.WriteLine("\nPress any key to try again....");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("\n\nPress any key to try again...");
                 Console.ReadKey();
                 PerFormSetOperations(collection);
             }//the option is invalid
@@ -348,10 +374,11 @@ namespace SimpleSets
                     break;
             }//end switch
 
-            Console.WriteLine("\n\n\tPress R to repeat set operation or anykey to return to the main menu.....");
-            string s = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("\n\n\tPress R to repeat set operation or anykey to return to the main menu...");
+            char s = Console.ReadKey().KeyChar.ToString().ToUpper()[0];
 
-            if (s[0].ToString().ToUpper()[0] == 'R')
+            if (s == 'R')
                  PerFormSetOperations(collection);
 
         }//PerFormSetOperations
@@ -369,11 +396,23 @@ namespace SimpleSets
                 Console.WriteLine(prompt);
                 Console.Write($"\n\t{toGet} : ");
                 string X = Console.ReadLine();
+                X = (string.IsNullOrEmpty(X) || string.IsNullOrWhiteSpace(X)) ? "4" : X;
                 int iX = (int)X[0] - 65;
-                if (iX < 0 || iX >= collection.Count)
+                //a --- 32(97)
+                //z --- 57(122)
+                if(iX >= 32 )
                 {
-                    DisplayError("Opps you have chossen an incorrect option.");
-                    Console.WriteLine("\nPress any key to try again....");
+                    DisplayError("Oops you have inserted the lowercase letter (Sets are always denoted by uppercase letters).");
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.Write("\n\nPress any key to try again....");
+                    Console.ReadKey();
+                    
+                }
+                else if (iX < 0 || iX >= collection.Count)
+                {
+                    DisplayError("Oops you have chosen an incorrect option.");
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.Write("\n\nPress any key to try again...");
                     Console.ReadKey();
                 }else
                 {

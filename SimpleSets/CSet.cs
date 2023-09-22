@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 namespace SimpleSets
 {
     public class CSet
@@ -11,7 +12,18 @@ namespace SimpleSets
         {
             get 
             {
-                //TODO::
+                //Check if it is an empty set first
+                if(elements[0].ElementId == "\u2205")
+                {
+                    //If that is the case then set the cardinality to 0
+                    Cardinality = 0;
+                    //Return an empty set
+                    return "\u2205";
+                }//end empty set if
+
+                //Return the set
+                //IComparer cm = (IComparable<Element>)elements;
+                //Array.Sort(elements);
                 string s = "{";
                 for (int i = 0; i < Cardinality; i++)
                 {
@@ -77,7 +89,7 @@ namespace SimpleSets
         {
             //Chheck for braces
             if (elementString[0] != '{' || elementString[elementString.Length - 1] != '}')
-                throw new ArgumentException("The set string is not in the right format");
+                throw new ArgumentException("Did not follow steps");
 
             elementString = elementString.Remove(0, 1);//Remove the firstBrace
             elementString = elementString.Remove(elementString.Length - 1);//Remove the las brace
@@ -240,6 +252,8 @@ namespace SimpleSets
                 if (setB.IndexOf(setA[i].ElementId) == -1)
                     elementstring += setA[i].ElementId + ",";
             }//end for
+            if (elementstring.Length == 1)
+                elementstring += "\u2205" + ",";
             elementstring = elementstring.Remove(elementstring.Length - 1);
             elementstring += "}";
             return new CSet(elementstring);//Return the set
@@ -269,24 +283,4 @@ namespace SimpleSets
         public bool IsElementOf(CSet setB) => setB.IndexOf(this.ElementString) >= 0;
         public Element[] GetElements() => this.elements;
     }//class
-    public enum SetType
-    {
-        ProperSet, 
-        SameSet, 
-        IsSubSet,
-        IsNotSubSet,
-        IsNotSubSetGreater
-    }//SetType
-    public enum ElementType
-    {
-        IsElement, 
-        IsNotElement
-    }//ElementType
-    public enum OperationType
-    {
-        X_Minus_Y,
-        Y_Minus_X,
-        X_And_Y,
-        X_OR_Y
-    }//OperationType
 }//namepscae

@@ -6,9 +6,9 @@ namespace SimpleSets
     //This Partial class will handle the UI displays and loading test data
     public partial class CClient
     {
-        private static readonly string SetsInfo_FileName1 = @"Files/Sets Application Extensions.docx";
-        private static readonly string SetsInfo_FileName2 = @"Files/Sets Application Extensions.pdf";
-        private static readonly string SetsData_FileName = @"Files/SetCollection.txt";
+        private static readonly string SetsInfo_FileName1 = Path.Combine(Directory.GetCurrentDirectory(),"Files/Sets Application Extensions.docx");
+        private static readonly string SetsInfo_FileName2 = Path.Combine(Directory.GetCurrentDirectory(),"Files/Sets Application Extensions.pdf");
+        private static readonly string SetsData_FileName = Path.Combine(Directory.GetCurrentDirectory(), "Files/SetCollection.txt");
         //Window setUp
         private static void TestData(SetCollection<CSet> coll)
         {
@@ -43,50 +43,62 @@ namespace SimpleSets
                     TestData(collection);
                 return;
             }//if the file exist
-
-
             TestData(collection);
         }//LoadData
         private static void DisplayWelcomeScreen()
         {
+            Console.WriteLine("");
             Console.WriteLine("\tSIMPLE SET APPLICATION FOR QUICK ANSWERS");
             Console.WriteLine("\t==========================================\n");
             Console.WriteLine("\n\tAre you feeling lazy to work through sets problems.?");
             Console.WriteLine("\tIf so then you are in luck because this application will be handy for you.");
             Console.WriteLine("\n\tThis application is going to make your life easier by doing some of the basic set operations that can take some time to complete in seconds.");
-            Console.WriteLine("\tRecieve your assignment now, and submit it in the next 5min with the help of this app(LOL).");
-
-            Console.WriteLine("\n\n\tWhat to expect.");
-            Console.WriteLine("\t===============\n");
+            Console.WriteLine("\tRecieve your assignment now, and submit it in the next 5min with the help of this app(LOL).\n\n");
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\n\t1. Saves your sets to prevent set entry everytime(Very handy).");
-            Console.WriteLine("\n\t2. Be able to perform set operations for set X and set Y such as:");
-            Console.WriteLine("\t\t: X - Y");
-            Console.WriteLine("\t\t: Y - X");
-            Console.WriteLine("\t\t: X OR Y");
-            Console.WriteLine("\t\t: X AND Y");
-            Console.WriteLine("\n\t3. Be able to also check if set X is a subset of Y or the other way around.");
-            Console.WriteLine("\n\t4. Be able to also check if set X is an element of Y or the other way around.");
-            Console.WriteLine("\n\t5. Gives you a very detailed information of the results above.");
-            
+            Console.WriteLine("  ".PadRight(90, '#'));
+            Console.WriteLine("  #".PadRight(89)+'#');
+            Console.WriteLine("  #".PadRight(89)+'#');
+            Console.WriteLine("  #\tWhat to expect.".PadRight(85)+"#");
+            Console.WriteLine("  #\t===============".PadRight(85) + "#");
+            Console.WriteLine("  #".PadRight(89) + "#");
+            Console.WriteLine("  #".PadRight(89) + "#");
+            Console.WriteLine("  #\t1. Saves your sets to prevent set entry everytime(Very handy).".PadRight(85) + "#");
+            Console.WriteLine("  #".PadRight(89) + "#");
+            Console.WriteLine("  #\t2. Be able to perform set operations for set X and set Y such as:".PadRight(85) + "#");
+            Console.WriteLine("  #\t\t: X - Y".PadRight(78) + "#");
+            Console.WriteLine("  #\t\t: Y - X".PadRight(78) + "#");
+            Console.WriteLine("  #\t\t: X OR Y".PadRight(78) + "#");
+            Console.WriteLine("  #\t\t: X AND Y".PadRight(78) + "#");
+            Console.WriteLine("  #".PadRight(89) + "#");
+            Console.WriteLine("  #\t3. Be able to also check if set X is a subset of Y or the other way around.".PadRight(85) + "#");
+            Console.WriteLine("  #".PadRight(89) + "#");
+            Console.WriteLine("  #\t4. Be able to also check if set X is an element of Y or the other way around.".PadRight(85) + "#");
+            Console.WriteLine("  #".PadRight(89) + "#");
+            Console.WriteLine("  #\t5. Gives you a very detailed information of the results above.".PadRight(85) + "#");
+            Console.WriteLine("  #".PadRight(89)+ '#');
+            Console.WriteLine("  ".PadRight(90, '#'));
 
-            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("\n\n\tHAVE FUN!!");
+            Console.ResetColor();
             Console.WriteLine("\n\nPress any key to continue......");
             Console.ReadKey();
         }//WelcomeScreen
-        private static void AddingNewSetRules()
+        private static void DisplayNewSetRules()
         {
             Console.Clear();
-            Console.WriteLine("CREATING A NEW SET INSTRUCTIONS");
+            Console.WriteLine("\tCREATING A NEW SET INSTRUCTIONS");
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("=============================");
-            Console.WriteLine("1. First things first you need to start with an opening brace(\"{\")\n");
-            Console.WriteLine("2. The list your elements seperated by commas. E.g| {5,6,8,6,....\n");
-            Console.WriteLine("3. Should you wish to add an element as a set then return to step 1 and follow the steps again.");
-            Console.WriteLine("4. The last crusial step is to end with a clossing brace(\"}\")\n");
-            Console.WriteLine("After this for steps you have now created your new set, congratulations!!.\n");
-            Console.WriteLine("\n\n\tPLEASE DO NOT NEST SETS INSIDE AN ELEMEN. E.g. {5,6,8,5,{5,3,{5,8}}}\n\t\t\tThis is acceptable {5,6,8,{5,6,8},{2,5,6}} \n");
+            Console.WriteLine("\t================================");
+            Console.WriteLine("\t1. First things first you need to start with an opening brace(\"{\").\n");
+            Console.WriteLine("\t2. Then list your elements seperated by commas. E.g| {5,6,8,6,....\n");
+            Console.WriteLine("\t3. Should you wish to add an element as a set, then return to step 1 and follow the steps again.\n");
+            Console.WriteLine("\t4. The last crusial step is to end with a clossing brace(\"}\").\n");
+            Console.WriteLine("\tAfter this for steps you have now created your new set, congratulations!!!\n");
+
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine("\n\n\tPLEASE DO NOT NEST SETS INSIDE AN ELEMENT.E.g.\n\tThis is not acceptable {5,6,8,5,{5,3,{5,8}},6}\n\tThis is acceptable {5,6,8,{5,6,8},{2,5,6}} \n");
+            Console.WriteLine("\tThis application does not support that feature. Maybe in a future update");
             Console.ResetColor();
         }//AddingNewSetRules
         private static void DisplayCollection(SetCollection<CSet> collection)
@@ -166,7 +178,7 @@ namespace SimpleSets
             if(type == SetType.SameSet)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine("\tSet X is equal/Identical to Set Y");
+                Console.WriteLine("\tSet X is equal/identical to Set Y");
             }
             if(type == SetType.IsNotSubSetGreater)
             {
@@ -208,7 +220,7 @@ namespace SimpleSets
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(errorMessage);
+            Console.Write(errorMessage);
             Console.ResetColor();
         }//DisplayErro
     }////Partial CClaient Class

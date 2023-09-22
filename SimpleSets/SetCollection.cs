@@ -66,6 +66,10 @@ namespace SimpleSets
             Count--;
             Array.Resize(ref SetCollections, Count);
         }//Remove
+        public void ClearAll()
+        {
+            SetCollections = new T[0];
+        }//ClearAll
         public IEnumerator<T> GetEnumerator()
         {
             foreach (var item in SetCollections)
