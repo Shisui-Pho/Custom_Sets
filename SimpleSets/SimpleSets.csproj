@@ -98,6 +98,7 @@
     <Compile Include="CSet.cs" />
     <Compile Include="Element.cs" />
     <Compile Include="CClient.cs" />
+    <Compile Include="Evaluate.cs" />
     <Compile Include="Operations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetCollection.cs" />
