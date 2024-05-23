@@ -9,8 +9,10 @@ namespace AdvancedSet
     //This client will be for displaying 
     public partial class Client
     {
-        private static void DisplaySets(ISetCollection<int> collection)
+        private static void DisplaySets(ISetCollection<int> collection, string header = "Current sets")
         {
+            Console.WriteLine();
+            Console.WriteLine($"\t{header} : ");
             Console.WriteLine();
             foreach (Set item in collection)
             {
@@ -119,5 +121,54 @@ namespace AdvancedSet
             Console.WriteLine("\t9. Learn more about sets.");
             Console.WriteLine("\tX. Exit.");
         }//DisplayMenuOptions
+        //private static void DisplayResetNamingInfo()
+        //{
+        //    Console.WriteLine();
+        //    Console.ForegroundColor = ConsoleColor.Yellow;
+        //    Console.WriteLine("\tResetting the naming will restart the naming process with the first set being \"A\"");
+        //    Console.WriteLine("\tOnce operation has been perfomed, it cannot be reversed.");
+        //    Console.ForegroundColor = ConsoleColor.Black;
+        //    Console.WriteLine();
+        //}//DisplayResetNamingInfo
+        private static void DisplaSetsWarning(SetWarting warning)
+        {
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("\tWarning :");
+            string about_to = "";
+            string operation_about_to = "";
+            string when_ = "";
+            switch (warning)
+            {
+                case SetWarting.Clear:
+                    about_to = "clear all the current sets";
+                    operation_about_to = "remove/delete all the sets that have";
+                    when_ = "Cleared";
+                    break;
+                case SetWarting.Remove_Set:
+                    about_to = "Remove a set in the current sets";
+                    operation_about_to = "remove/delete the set that has";
+                    when_ = "Set is removed";
+                    break;
+                case SetWarting.Remove_Element:
+                    about_to = "Remove an element in a set";
+                    operation_about_to = "remove/delete the element that has";
+                    when_ = "element is removed";
+                    break;
+                case SetWarting.Reset_Naming:
+                    about_to = "Reset the naming of the sets.";
+                    operation_about_to = "reset the naming of the set collection that has";
+                    when_ = "reset";
+                    break;
+                default:
+                    break;
+            }
+            Console.WriteLine($"\tYou are about to {about_to}.");
+            Console.WriteLine($"\tThis operation will {operation_about_to} been saved.");
+            Console.WriteLine($"\tWhen {when_}, it cannot be undone!!.");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine();
+        }//DisplaClearAllSetsWarning
+        //private static 
     }//class
 }//namespace
