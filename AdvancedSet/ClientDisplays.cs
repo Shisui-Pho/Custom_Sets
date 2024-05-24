@@ -9,6 +9,7 @@ namespace AdvancedSet
     //This client will be for displaying 
     public partial class Client
     {
+
         private static void DisplaySets(ISetCollection<int> collection, string header = "Current sets")
         {
             Console.WriteLine();
