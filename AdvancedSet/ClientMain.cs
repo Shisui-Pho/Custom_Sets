@@ -512,9 +512,4 @@ namespace AdvancedSet
             AnyKey();
         }//AddNewSet
     }//class
-    public enum Operation
-    {
-        Cancelled,
-        Continue
-    }
 }//namespace
