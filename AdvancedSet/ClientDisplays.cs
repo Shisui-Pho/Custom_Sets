@@ -78,7 +78,7 @@ namespace AdvancedSet
         {
             Console.WriteLine();
             Console.WriteLine();
-            Console.Write("\t {0}", msg);
+            Console.Write("\t{0}", msg);
             Console.ReadKey();
         }//AnyKey
         private static string ReadSetString(string sPrompt, string attempt = "")
@@ -213,5 +213,28 @@ namespace AdvancedSet
             Console.WriteLine($"\tThe set {set} {(contains ? "contains" : "does not contain")} the element {element.ToString()}");
             Console.WriteLine();
         }//DisplayContainsResults
+        private static void DisplaySetOperationsResults(ICSet<int> outcome, ICSet<int> setA, ICSet<int> setB, SetOperator operation)
+        {
+            Console.Clear();
+            Console.WriteLine("\tOutcome");
+            Console.WriteLine("\t=======");
+            Console.WriteLine();
+            Console.WriteLine("\tsetA : {0}", setA);
+            Console.WriteLine("\tsetB : {0}", setB);
+            Console.WriteLine();
+            switch (operation)
+            {
+                case SetOperator.Intersection:
+                    Console.WriteLine("\tsetA \u2229 setB = {0}", outcome);
+                    break;
+                case SetOperator.Union:
+                    Console.WriteLine("\tsetA U setB = {0}", outcome);
+                    break;
+                case SetOperator.Difference:
+                    Console.WriteLine("\tsetA - setB = {0}", outcome);
+                    break;
+            }//end switch
+            Console.WriteLine();
+        }//DisplaySetOperationsResults
     }//class
 }//namespace

@@ -2,6 +2,8 @@
 using SetLibrary;
 using SetLibrary.Generic;
 using SetLibrary.Collections;
+using SetLibrary.Operations;
+
 namespace AdvancedSet
 {
     public partial class Client
@@ -255,8 +257,7 @@ namespace AdvancedSet
             catch
             {
                 DisplayError("Only integers allowed.");
-                Console.Write("\tPress any key to try again...");
-                Console.ReadKey();
+                AnyKey("Press any key to try again.....");
                 return default;
             }
         }//GetElement
@@ -295,12 +296,11 @@ namespace AdvancedSet
                             if (!set.Contains(tree) || tree == default)
                             {
                                 Console.WriteLine($"\tThe element \"{((tree == null) ? element : tree.ToString())}\" was not found in the set.");
-                                Console.WriteLine("\tPress any key to try again....");
-                                Console.ReadKey();
+                                AnyKey("Press any key to try again........");
                                 continue;
                             }//end if tree does not contain
                             Console.WriteLine();
-                            Console.Write("\t Remove the element (Y = Yes/ N = No) : ");
+                            Console.Write("\tRemove the element (Y = Yes/ N = No) : ");
                             string confirm = Console.ReadKey().KeyChar.ToString().ToUpper();
                             if (confirm == "Y")
                                 set.RemoveElement(tree);//Remove the tree
@@ -311,12 +311,11 @@ namespace AdvancedSet
                             if (!set.Contains(elem) || !success)
                             {
                                 Console.WriteLine($"\tThe element \"{element}\" was not found in the set.");
-                                Console.WriteLine("\tPress any key to try again....");
-                                Console.ReadKey();
+                                AnyKey("Press any key to try again....");
                                 continue;
                             }//end if tree does not contain
                             Console.WriteLine();
-                            Console.Write("\t Remove the element (Y = Yes/ N = No) : ");
+                            Console.Write("\tRemove the element (Y = Yes/ N = No) : ");
                             string confirm = Console.ReadKey().KeyChar.ToString().ToUpper();
                             if (confirm == "Y")
                                 set.RemoveElement(elem);//Remove the tree
@@ -351,7 +350,7 @@ namespace AdvancedSet
         {
             do
             {
-                GetInputSetCollection(DisplayCheckingForSubSetsInformation,sets, out ICSet<int> setA, out ICSet<int> setB, out Operation opr);
+                GetInputSetCollection(InputTypeFunction.subsets,sets, out ICSet<int> setA, out ICSet<int> setB, out Operation opr, DisplayCheckingForSubSetsInformation);
                 if (opr == Operation.Continue)
                 {
                     bool isSubset = setA.IsSubSetOf(setB, out SetType type);
@@ -359,11 +358,7 @@ namespace AdvancedSet
                 }
                 else
                     break;
-                Console.WriteLine();
-                Console.Write("\tPress 1 to continue......");
-                _ = int.TryParse(Console.ReadLine(), out int val);
-                if (val != 1)
-                    break;
+                AnyKey("Press any key to continue....");
             } while (true);
             AnyKey();
         }//CheckForSubsets
@@ -374,14 +369,8 @@ namespace AdvancedSet
             name = name.Replace(" ", "");//Remove spaces
             return sets.FindSetByName(name);
         }//GetAndValidateInput
-        private static void GetInputSetCollection(delDisplayInfo_Func info,ISetCollection<int> sets, out ICSet<int> setA, out ICSet<int> setB, out Operation operation)
+        private static void GetInputSetCollection(InputTypeFunction type,ISetCollection<int> sets, out ICSet<int> setA, out ICSet<int> setB, out Operation operation, delDisplayInfo_Func info = null)
         {
-            string name;
-            if (info != null)
-                name = "subset";
-            else
-                name = "element";
-
             string setAName = "";
             string setBName = "";
             setA = setB = null;
@@ -389,7 +378,7 @@ namespace AdvancedSet
             do
             {
                 Console.Clear();
-                Console.WriteLine($"\tChecking for {name}s");
+                Console.WriteLine($"\tChecking for {type.ToString()}");
                 Console.WriteLine("\t====================");
 
                 //Display information
@@ -398,11 +387,22 @@ namespace AdvancedSet
                 //Display the sets
 
                 DisplaySets(sets);
-                if(name == "subset")
-                    Console.WriteLine($"\tWe will use setA to represent the set which is supposed to be a subset of setB.");
-                else
-                    Console.WriteLine("\tWe will use setA as the container set and setB as the element set.");
+                Console.ForegroundColor = ConsoleColor.Green;
+                switch (type)
+                {
+                    case InputTypeFunction.subsets:
+                        Console.WriteLine($"\tWe will use setA to represent the set which is supposed to be a subset of setB.");
+                        break;
+                    case InputTypeFunction.elements:
+                        Console.WriteLine("\tWe will use setA as the container set and setB as the element set.");
+                        break;
+                    case InputTypeFunction.operations:
+                        Console.WriteLine("\tWe will use setA for the set on the left and setB for the set at the right");
+                        break;
+                }//end switch
                 Console.WriteLine("\tChose name from the above set(s). The name has to match one of the name above");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine();
                 Console.WriteLine("\tPress \"-1\" to exit.");
                 Console.WriteLine();
 
@@ -467,7 +467,7 @@ namespace AdvancedSet
         {
             do
             {
-                GetInputSetCollection(null, sets, out ICSet<int> setA, out ICSet<int> setB, out Operation operation);
+                GetInputSetCollection(InputTypeFunction.elements, sets, out ICSet<int> setA, out ICSet<int> setB, out Operation operation);
                 Console.Clear();
                 if (operation == Operation.Cancelled)
                     break;
@@ -489,12 +489,7 @@ namespace AdvancedSet
                     else
                         Console.WriteLine("\tsetB is not an element of setA");
 
-                    Console.WriteLine();
-                    Console.WriteLine();
-                    Console.Write("\tPress \"X\" to cancel or any other key to continue.....");
-                    char option = Console.ReadKey().KeyChar.ToString().ToUpper()[0];
-                    if (option == 'X')
-                        break;
+                    AnyKey("Press any key to continue.....");
                 }//end if
             } while (true);
             AnyKey();
@@ -550,11 +545,7 @@ namespace AdvancedSet
                     }                        
                     DisplayContainsResults(set.Contains(elem), set, elem);
                 }
-
-                Console.WriteLine("Press \"X\" to cancel or any key to continue....");
-                char option = Console.ReadKey().KeyChar.ToString().ToUpper()[0];
-                if (option == 'X')
-                    break;
+                AnyKey("Press any key to continue........");
             } while (true);
 
             AnyKey();
@@ -564,11 +555,117 @@ namespace AdvancedSet
         #region Set operations
         private static void PerformSetOperations(ISetCollection<int> sets)
         {
-            Console.Clear();
-            Console.WriteLine("\tPerformaing set operations.........");
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("\tSet operators");
+                Console.WriteLine("\t=============");
+                Console.WriteLine();
+                Console.WriteLine("\tChoose which operator to do.");
+                Console.WriteLine("\t1. setA U setB");//U+2229
+                Console.WriteLine("\t2. setA \u2229 setB");
+                Console.WriteLine("\t3. setA - setB");
+                Console.WriteLine("\t4. Complement");
+                Console.WriteLine("\tX. Exit");
+                Console.WriteLine();
+                Console.Write("\tOption : ");
+                string option = Console.ReadLine().ToUpper().Replace(" ", "");
+                if (option == "X")
+                    break;
+
+                ICSet<int> setA = default, setB = default, outcome = default;
+                SetOperator @operator = SetOperator.Default;
+                Operation opr = Operation.Continue;
+                switch (option)
+                {
+                    case "1":
+                        @operator = SetOperator.Union;
+                        GetInputSetCollection(InputTypeFunction.operations, sets, out setA, out setB, out opr);
+                        outcome = setA.Union(setB);
+                        break;
+                    case "2":
+                        @operator = SetOperator.Intersection;
+                        GetInputSetCollection(InputTypeFunction.operations, sets, out setA, out setB, out opr);
+                        outcome = setA.Intersection(setB);
+                        break;
+                    case "3":
+                        @operator = SetOperator.Difference;
+                        GetInputSetCollection(InputTypeFunction.operations, sets, out setA, out setB, out opr);
+                        outcome = setA.Difference(setB);
+                        break;
+                    case "4":
+                        @operator = SetOperator.Complement;
+                        SetComplement(sets);
+                        break;
+                    default:
+                        break;
+                }//end swithc
+                if (opr == Operation.Cancelled)
+                    break;
+                if( @operator != SetOperator.Complement)
+                    DisplaySetOperationsResults(outcome, setA, setB, @operator);
+
+                AnyKey("Press any key to continue........");
+            } while (true);
             AnyKey();
         }//PerformSetOperations
+        private static void SetComplement(ISetCollection<int> sets)
+        {
+            string universalName = "";
+            ICSet<int> universal = default;
+            var loop = false;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("\tSet complement.");
+                Console.WriteLine("\t===============");
+                Console.WriteLine();
+                DisplaySets(sets);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\tFor set Complement, setA must be a subset of the universal set.");
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.WriteLine();
+                Console.WriteLine("\tPress \"-1\" to cancel");
+                Console.WriteLine();
+                if(universalName == "")
+                {
+                    universal = GetAndValidateInputForSetName("Universal set", sets,ref universalName);
+                    if (universalName == "-1")
+                        break;
+                    if (universal == null)
+                    {
+                        universalName = "";
+                        continue;
+                    }
+                    loop = false;
+                }//end if
+                //here we have the universal set
+                if (loop)
+                    Console.WriteLine("\tUniversal set : {0}", universalName);
+                string setAName = "";
+                ICSet<int> setA = GetAndValidateInputForSetName("SetA", sets, ref setAName);
+                if (setAName == "-1")
+                    break;
+                if (setA == null)
+                {
+                    loop = true;
+                    continue;
+                }//end if
 
+                Console.WriteLine();
+                Console.WriteLine();
+                ICSet<int> complement = setA.Complement(universal, out bool isUniversal);
+                if (!isUniversal)
+                {
+                    Console.WriteLine("\t Set {0} is not a universal set for set {1}.", universalName, setAName);
+                    continue;
+                }//end if not universal
+                //Here it is universal
+                Console.WriteLine("\tThe complement of setA is \n\t{0}", complement.Cardinality);
+                Console.WriteLine();
+                AnyKey("Press any key to continue........");
+            } while (true);
+        }//SetComplement
         #endregion Set operations
 
         #region Perform set laws
