@@ -55,18 +55,154 @@ namespace AdvancedSet
                 {
                     case 1: AddNewSet(sets); break; 
                     case 2:RemoveSet(sets); break; 
-                    case 3: CheckForSubsets(sets); break;
-                    case 4: CheckForElement(sets); break; 
-                    case 5: PerformSetOperations(sets); break; 
-                    case 6: PerformSetLaws(sets); break;
-                    case 7: ClearAllSests(sets); break; 
-                    case 8:ResetNaming(sets); break; 
-                    case 9: LearnMoreAboutSets(); break;
+                    case 3: ModifySet(sets); break;
+                    case 4: CheckForSubsets(sets); break;
+                    case 5: CheckForElement(sets); break; 
+                    case 6: PerformSetOperations(sets); break; 
+                    case 7: PerformSetLaws(sets); break;
+                    case 8: ClearAllSests(sets); break; 
+                    case 9:ResetNaming(sets); break; 
+                    case 10: LearnMoreAboutSets(); break;
                     default:break;
                 }//end switch
             } while (option != "X");
         }//Menu
 
+        private static void ModifySet(ISetCollection<int> sets)
+        {
+            ICSet<int> set;
+            string name = "";
+            string error = "";
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("\tModifying a set");
+                Console.WriteLine("\t================");
+                Console.WriteLine();
+                DisplaySets(sets);
+                Console.WriteLine("\tPress \"-1\" to exit.");
+                Console.WriteLine();
+                if (error != "")
+                    DisplayError(error);
+                set = GetAndValidateInputForSetName("Set to modify", sets,ref name);
+                if (name == "-1")
+                    break;
+                if (set == default)
+                    error = "Invalid set name";
+                else
+                {
+                    //Modify the set.
+                    ModifySet(set, name);
+                }//end else
+            } while (true);
+            AnyKey();
+        }//ModifySet
+
+        private static void ModifySet(ICSet<int> set,string name)
+        {
+            bool success;
+            int elem;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine($"\tModifying the set \"{name}\"");
+                Console.WriteLine();
+                int count = set.ElementString.Length;
+                Console.WriteLine($"\t{set.ElementString.PadRight(count + 8)} |{set.Cardinality}|");
+                Console.WriteLine();
+                Console.WriteLine("\t1. Add an element.");
+                Console.WriteLine("\t2. Remove an element.");
+                Console.WriteLine("\tX. Cancel");
+                Console.WriteLine();
+                Console.Write("\tOption : ");
+                string input = Console.ReadLine().ToUpper();
+                Console.WriteLine();
+                Console.WriteLine();
+                if (input == "X")
+                    break;
+                switch (input)
+                {
+                    case "2":
+                        Console.Write("\tElement to remove : ");
+                        string element = Console.ReadLine();
+                        if (element == "X")
+                            break;
+                        if(element.Contains("{") || element.Contains("}"))
+                        {
+                            var tree = GetElement(element);
+                            if (!set.Contains(tree) || tree == default)
+                            {
+                                Console.WriteLine($"\tThe element \"{((tree == null) ? element : tree.ToString())}\" was not found in the set.");
+                                Console.WriteLine("\tPress any key to try again....");
+                                Console.ReadKey();
+                                continue;
+                            }//end if tree does not contain
+                            Console.WriteLine();
+                            Console.Write("\t Remove the element (Y = Yes/ N = No) : ");
+                            string confirm = Console.ReadKey().KeyChar.ToString().ToUpper();
+                            if (confirm == "Y")
+                                set.RemoveElement(tree);//Remove the tree
+                        }
+                        else
+                        {
+                            success = int.TryParse(element, out elem);
+                            if (!set.Contains(elem) || !success)
+                            {
+                                Console.WriteLine($"\tThe element \"{element}\" was not found in the set.");
+                                Console.WriteLine("\tPress any key to try again....");
+                                Console.ReadKey();
+                                continue;
+                            }//end if tree does not contain
+                            Console.WriteLine();
+                            Console.Write("\t Remove the element (Y = Yes/ N = No) : ");
+                            string confirm = Console.ReadKey().KeyChar.ToString().ToUpper();
+                            if (confirm == "Y")
+                                set.RemoveElement(elem);//Remove the tree
+                        }
+                        break;
+                    case "1":
+                        Console.Write("\tElement to add : ");
+                        element = Console.ReadLine();
+                        if (element == "X")
+                            break;
+                        if (element.Contains("}")|| element.Contains("}"))
+                        {
+                            var tree = GetElement(element);
+                            if(tree != null)
+                                set.AddElement(tree);
+                            continue;
+                        }
+
+                        success = int.TryParse(element, out elem);
+                        if (success)
+                            set.AddElement(elem);
+                        break;
+                    default:
+                        break;
+                }
+            } while (true);
+        }//EditingSet
+        private static ISetTree<int> GetElement(string element)
+        {
+            if (!BracesEvaluation.AreBracesCorrect(element))
+            {
+                DisplayError("Braces are not matching.");
+                Console.Write("\tPress any key to try again...");
+                Console.ReadKey();
+                return default;
+            }//Extract the tree
+            try
+            {
+                return SetExtraction.Extract(element, settings);
+            }
+            catch
+            {
+                DisplayError("Braces are not matching.");
+                Console.Write("\tPress any key to try again...");
+                Console.ReadKey();
+                return default;
+            }
+        }//GetElement
         private static void LearnMoreAboutSets()
         {
             Console.Clear();
@@ -189,7 +325,7 @@ namespace AdvancedSet
             } while (true);
             AnyKey();
         }//CheckForSubsets
-        private static ICSet<int> GetAndValidateInput(string header, ISetCollection<int> sets, ref string name)
+        private static ICSet<int> GetAndValidateInputForSetName(string header, ISetCollection<int> sets, ref string name)
         {
             Console.Write($"\t{header} : ");
             name = Console.ReadLine();
@@ -225,7 +361,7 @@ namespace AdvancedSet
                     //Display the name of setA
                     Console.WriteLine("\t\tsetA = {0}", setAName);
                     Console.WriteLine();
-                    setB = GetAndValidateInput("\tsetB", sets, ref setBName);
+                    setB = GetAndValidateInputForSetName("\tsetB", sets, ref setBName);
                     if (setB == default && setBName != "-1")
                         setBName = "";
                     else
@@ -233,7 +369,7 @@ namespace AdvancedSet
                 }
                 else
                 {
-                    setA = GetAndValidateInput("\tSetA", sets, ref setAName);
+                    setA = GetAndValidateInputForSetName("\tSetA", sets, ref setAName);
                     if (setAName == "-1")
                         break;//Here the user decided to end the operation
                     if (setA == default && setAName != "-1")
@@ -375,7 +511,6 @@ namespace AdvancedSet
             }
             AnyKey();
         }//AddNewSet
-        
     }//class
     public enum Operation
     {

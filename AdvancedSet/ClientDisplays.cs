@@ -113,13 +113,14 @@ namespace AdvancedSet
         {
             Console.WriteLine("\t1. Add new set.");
             Console.WriteLine("\t2. Remove a set.");
-            Console.WriteLine("\t3. Check for subset.");
-            Console.WriteLine("\t4. Check for element.");
-            Console.WriteLine("\t5. Perform set operation.");
-            Console.WriteLine("\t6. Perform set laws.");
-            Console.WriteLine("\t7. Clear all sets.");
-            Console.WriteLine("\t8. Reset set naming.");
-            Console.WriteLine("\t9. Learn more about sets.");
+            Console.WriteLine("\t3. Modify a set.");
+            Console.WriteLine("\t4. Check for subset.");
+            Console.WriteLine("\t5. Check for element.");
+            Console.WriteLine("\t6. Perform set operation.");
+            Console.WriteLine("\t7. Perform set laws.");
+            Console.WriteLine("\t8. Clear all sets.");
+            Console.WriteLine("\t9. Reset set naming.");
+            Console.WriteLine("\t10. Learn more about sets.");
             Console.WriteLine("\tX. Exit.");
         }//DisplayMenuOptions
         //private static void DisplayResetNamingInfo()
