@@ -171,11 +171,79 @@ namespace AdvancedSet
 
         private static void CheckForSubsets(ISetCollection<int> sets)
         {
-            Console.Clear();
-            Console.WriteLine("\tChecking for subsets.........");
+            do
+            {
+                GetInputSetCollection(sets, out ICSet<int> setA, out ICSet<int> setB, out Operation opr);
+                if (opr == Operation.Continue)
+                {
+                    bool isSubset = setA.IsSubSetOf(setB, out SetType type);
+                    DisplayIsSubsetOfOutCome(isSubset, setA, setB, type);
+                }
+                else
+                    break;
+                Console.WriteLine();
+                Console.Write("\tPress 1 to continue......");
+                _ = int.TryParse(Console.ReadLine(), out int val);
+                if (val != 1)
+                    break;
+            } while (true);
             AnyKey();
         }//CheckForSubsets
+        private static ICSet<int> GetAndValidateInput(string header, ISetCollection<int> sets, ref string name)
+        {
+            Console.Write($"\t{header} : ");
+            name = Console.ReadLine();
+            name = name.Replace(" ", "");//Remove spaces
+            return sets.FindSetByName(name);
+        }//GetAndValidateInput
+        private static void GetInputSetCollection(ISetCollection<int> sets, out ICSet<int> setA, out ICSet<int> setB, out Operation operation)
+        {
+            string setAName = "";
+            string setBName = "";
+            setA = setB = null;
+            operation = Operation.Cancelled;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("\tChecking for subsets");
+                Console.WriteLine("\t====================");
 
+                //Display information
+                DisplayCheckingForSubSetsInformation();
+
+                //Display the sets
+
+                DisplaySets(sets);
+
+                Console.WriteLine("\tWe will use setA to represent the set which is supposed to be a subset of setB.");
+                Console.WriteLine("\tChose name from the above set(s). The name has to match one of the name above");
+                Console.WriteLine("\tPress \"-1\" to exit.");
+                Console.WriteLine();
+
+                if (setAName != "")
+                {
+                    //Display the name of setA
+                    Console.WriteLine("\t\tsetA = {0}", setAName);
+                    Console.WriteLine();
+                    setB = GetAndValidateInput("\tsetB", sets, ref setBName);
+                    if (setB == default && setBName != "-1")
+                        setBName = "";
+                    else
+                        break;//Here means that the name is accurate or the user decided to quit the operation.
+                }
+                else
+                {
+                    setA = GetAndValidateInput("\tSetA", sets, ref setAName);
+                    if (setAName == "-1")
+                        break;//Here the user decided to end the operation
+                    if (setA == default && setAName != "-1")
+                        setAName = "";
+                }//end if
+            } while (true);
+            if(setA != null && setB != null)
+                operation = Operation.Continue;
+
+        }//GettingInput
         private static void RemoveSet(ISetCollection<int> sets)
         {
             Console.Clear();
@@ -309,4 +377,9 @@ namespace AdvancedSet
         }//AddNewSet
         
     }//class
+    public enum Operation
+    {
+        Cancelled,
+        Continue
+    }
 }//namespace

@@ -170,6 +170,48 @@ namespace AdvancedSet
             Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine();
         }//DisplaClearAllSetsWarning
-        //private static 
+        private static void DisplayCheckingForSubSetsInformation()
+        {
+            Console.WriteLine();
+            Console.WriteLine("\tThe following results can be expected from checking for subsets(We will use setA and setB).");
+            Console.WriteLine("\t1. If all elements in setA are in setB and |setA| = |setB|, then setA is a subset of setB and can also be setB.");
+            Console.WriteLine("\t2. If all elements in setA are in setB and |setA| < |setB|, then setA is a proper subset of setB.");
+            Console.WriteLine("\t3. If not all elemnts in setA are in setB, then setA is not a subset of setA.");
+            Console.WriteLine("\t4. If |setA| > |setB| then setA cannot be a subset of setB.");
+            Console.WriteLine();
+        }//DisplayCheckingForSubSetsInformation
+        private static void DisplayIsSubsetOfOutCome(bool isSubset, ICSet<int> setA, ICSet<int> setB, SetType type)
+        {
+            Console.Clear();
+            Console.WriteLine("\tResults");
+            Console.WriteLine("\t=======");
+            Console.WriteLine();
+            int padding = (setA.ElementString.Length > setB.ElementString.Length) ? setA.ElementString.Length : setB.ElementString.Length;
+            padding += 10;
+            Console.WriteLine($"\tsetA : {setA.ElementString.PadRight(padding)} |setA| = {setA.Cardinality}");
+            Console.WriteLine($"\tsetB : {setB.ElementString.PadRight(padding)} |setB| = {setB.Cardinality}");
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Blue;
+            switch (type)
+            {
+                case SetType.SubSet & SetType.Same_Set:
+                    Console.WriteLine("\tsetA is a subset of setB. But setA is also the same as setB and so we can assume that setA = setB #");
+                    break;
+                case SetType.NotASubSet:
+                    var diff = setA.Without(setB);
+                    Console.WriteLine("\tsetA is not a subset of setB. Not all elements in setA are in setB. The following element(s) are not in setB but are in setA:");
+                    Console.WriteLine("\t\t{0}", diff.ElementString);
+                    break;
+                case SetType.ProperSet:
+                    Console.WriteLine("\tsetA is a proper set of setB. If we look at all the elements of setA we can see that they are also in setB.");
+                    Console.WriteLine("\tAnd we can also see that |setA| < |setB| which satisfies our proper set definition #");
+                    break;
+                default:
+                    break;
+
+            }//end switch
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine();
+        }//DisplayIsSubsetOfOutCome
     }//class
 }//namespace
