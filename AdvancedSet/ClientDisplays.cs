@@ -205,5 +205,13 @@ namespace AdvancedSet
             Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine();
         }//DisplayIsSubsetOfOutCome
+        private static void DisplayContainsResults<T>(bool contains, ICSet<int> set, T element)
+        {
+            Console.Clear();
+            Console.WriteLine("\tResults");
+            Console.WriteLine("\t=======");
+            Console.WriteLine($"\tThe set {set} {(contains ? "contains" : "does not contain")} the element {element.ToString()}");
+            Console.WriteLine();
+        }//DisplayContainsResults
     }//class
 }//namespace

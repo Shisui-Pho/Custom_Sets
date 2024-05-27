@@ -254,7 +254,7 @@ namespace AdvancedSet
             }
             catch
             {
-                DisplayError("Braces are not matching.");
+                DisplayError("Only integers allowed.");
                 Console.Write("\tPress any key to try again...");
                 Console.ReadKey();
                 return default;
@@ -393,7 +393,7 @@ namespace AdvancedSet
                 Console.WriteLine("\t====================");
 
                 //Display information
-                info();
+                info?.Invoke();
 
                 //Display the sets
 
@@ -445,6 +445,7 @@ namespace AdvancedSet
                 Console.WriteLine("\t2. Check if some element is an element in an existing set.");
                 Console.WriteLine("\tX. Cancel");
                 Console.WriteLine();
+                Console.Write("\tOption : ");
                 string option = Console.ReadLine().ToUpper().Replace(" ", "");
                 if (option.Length > 0 && option == "X")
                     break;
@@ -454,6 +455,7 @@ namespace AdvancedSet
                         CheckWithOtherSets(sets);
                         break;
                     case "2":
+                        CheckWithElements(sets);
                         break;
                     default:
                         break;
@@ -466,18 +468,97 @@ namespace AdvancedSet
             do
             {
                 GetInputSetCollection(null, sets, out ICSet<int> setA, out ICSet<int> setB, out Operation operation);
+                Console.Clear();
                 if (operation == Operation.Cancelled)
                     break;
                 else
                 {
-                    
-                }
+                    Console.WriteLine("\tResults");
+                    Console.WriteLine("\t=======");
+                    Console.WriteLine();
+                    Console.WriteLine("\tSetA : {0}", setA.ElementString);
+                    Console.WriteLine("\tSetB : {0}", setB.ElementString);
+                    Console.WriteLine();
+                    Console.WriteLine("\tOutcome:");
+                    Console.WriteLine();
+                    //Check for that relation
+                    if (setB.IsElementOf(setA))
+                    {
+                        Console.WriteLine("\tsetB is an element of setA.");
+                    }//end if
+                    else
+                        Console.WriteLine("\tsetB is not an element of setA");
+
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.Write("\tPress \"X\" to cancel or any other key to continue.....");
+                    char option = Console.ReadKey().KeyChar.ToString().ToUpper()[0];
+                    if (option == 'X')
+                        break;
+                }//end if
             } while (true);
+            AnyKey();
         }//CheckWithOtherSets
         private static void CheckWithElements(ISetCollection<int> sets)
         {
+            string name = "";
+            string error = "";
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("\tChecking with elements");
+                Console.WriteLine("\t======================");
 
-        }
+                //Display the sets
+                DisplaySets(sets);
+                Console.WriteLine("\tChoose the set.");
+                Console.WriteLine("\tPress \"-1\" to cancel.");
+                Console.WriteLine();
+                if (error != "")
+                    DisplayError(error);
+                ICSet<int> set = GetAndValidateInputForSetName("Set", sets, ref name);
+
+                if (name == "-1")
+                    break;
+                if (set == null)
+                {
+                    error = "Invalid set name";
+                    continue;
+                }//end if
+
+                //Reset the error.
+                error = "";
+                //Else 
+                Console.Write("\tElement to add : ");
+                string element = Console.ReadLine();
+                if (element == "X")
+                    break;
+                if (element.Contains("}") || element.Contains("}"))
+                {
+                    var tree = GetElement(element);
+                    if (tree == null)
+                        continue;
+                    DisplayContainsResults(set.Contains(tree), set, tree);
+                }//end if
+                else
+                {
+                    bool success = int.TryParse(element, out int elem);
+                    if (!success)
+                    {
+                        error = "Only use integers";
+                        continue;
+                    }                        
+                    DisplayContainsResults(set.Contains(elem), set, elem);
+                }
+
+                Console.WriteLine("Press \"X\" to cancel or any key to continue....");
+                char option = Console.ReadKey().KeyChar.ToString().ToUpper()[0];
+                if (option == 'X')
+                    break;
+            } while (true);
+
+            AnyKey();
+        }//CheckWithElements
         #endregion Checking elements
 
         #region Set operations
