@@ -9,7 +9,7 @@ namespace AdvancedSet
     //This client will be for displaying 
     public partial class Client
     {
-
+        public delegate void delDisplayInfo_Func();
         private static void DisplaySets(ISetCollection<int> collection, string header = "Current sets")
         {
             Console.WriteLine();
@@ -123,15 +123,6 @@ namespace AdvancedSet
             Console.WriteLine("\t10. Learn more about sets.");
             Console.WriteLine("\tX. Exit.");
         }//DisplayMenuOptions
-        //private static void DisplayResetNamingInfo()
-        //{
-        //    Console.WriteLine();
-        //    Console.ForegroundColor = ConsoleColor.Yellow;
-        //    Console.WriteLine("\tResetting the naming will restart the naming process with the first set being \"A\"");
-        //    Console.WriteLine("\tOnce operation has been perfomed, it cannot be reversed.");
-        //    Console.ForegroundColor = ConsoleColor.Black;
-        //    Console.WriteLine();
-        //}//DisplayResetNamingInfo
         private static void DisplaSetsWarning(SetWarting warning)
         {
             Console.WriteLine();
