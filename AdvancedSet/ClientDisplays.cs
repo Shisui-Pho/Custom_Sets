@@ -1,6 +1,7 @@
 ﻿using SetLibrary;
 using SetLibrary.Collections;
 using SetLibrary.Generic;
+using SetLibrary.Operations;
 using System;
 using System.Windows.Forms;
 
@@ -111,17 +112,17 @@ namespace AdvancedSet
         }//Crashed
         private static void DisplayMenuOptions()
         {
-            Console.WriteLine("\t1. Add new set.");
-            Console.WriteLine("\t2. Remove a set.");
-            Console.WriteLine("\t3. Modify a set.");
-            Console.WriteLine("\t4. Check for subset.");
-            Console.WriteLine("\t5. Check for element.");
-            Console.WriteLine("\t6. Perform set operation.");
-            Console.WriteLine("\t7. Perform set laws.");
-            Console.WriteLine("\t8. Clear all sets.");
-            Console.WriteLine("\t9. Reset set naming.");
+            Console.WriteLine("\t1.  Add new set.");
+            Console.WriteLine("\t2.  Remove a set.");
+            Console.WriteLine("\t3.  Modify a set.");
+            Console.WriteLine("\t4.  Check for subset.");
+            Console.WriteLine("\t5.  Check for element.");
+            Console.WriteLine("\t6.  Perform set operation.");
+            Console.WriteLine("\t7.  Perform set laws.");
+            Console.WriteLine("\t8.  Clear all sets.");
+            Console.WriteLine("\t9.  Reset set naming.");
             Console.WriteLine("\t10. Learn more about sets.");
-            Console.WriteLine("\tX. Exit.");
+            Console.WriteLine("\tX.  Exit.");
         }//DisplayMenuOptions
         private static void DisplaSetsWarning(SetWarting warning)
         {
@@ -236,5 +237,560 @@ namespace AdvancedSet
             }//end switch
             Console.WriteLine();
         }//DisplaySetOperationsResults
+        private static void DisplaySetLaws()
+        {
+            Console.WriteLine();
+            Console.WriteLine("\tSET LAWS AND PROPERTIES");
+            Console.WriteLine("\t=======================");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("\t1. Cummutative law:");
+            //Console.WriteLine("\t==================");
+            Console.WriteLine("\t   A U B = B U A");
+            Console.WriteLine("\t   A \u2229 B = B \u2229 A");
+            Console.WriteLine();
+            Console.WriteLine("\t2. Associative law:");
+            //Console.WriteLine("\t==================");
+            Console.WriteLine("\t   A U ( B U C ) = ( A U B) U C");
+            Console.WriteLine("\t   A \u2229 ( B \u2229 C ) = (A \u2229 B) \u2229 C");
+            Console.WriteLine();
+            Console.WriteLine("\t3. Distributive law:");
+            //Console.WriteLine("\t===================");
+            Console.WriteLine("\t   A U ( B \u2229 C ) = ( A U B ) \u2229 ( A U C)");
+            Console.WriteLine("\t   A \u2229 ( B U C ) = ( A \u2229 B ) U ( A \u2229 C)");
+            Console.WriteLine();
+            Console.WriteLine("\t4. Double complement:");
+            //Console.WriteLine("\t=====================");
+            Console.WriteLine("\t   ~(~A) = A");
+            Console.WriteLine();
+            Console.WriteLine("\t5. DeMorgan's Law:");
+            //Console.WriteLine("\t====================");
+            Console.WriteLine("\t   ~( A U B ) = ~A \u2229 ~B");
+            Console.WriteLine("\t   ~( A \u2229 B ) = ~A U ~B");
+            Console.WriteLine();
+            Console.WriteLine("\t6. Identity:");
+            //Console.WriteLine("\t===========");
+            Console.WriteLine("\t   \u2205 U A = A");
+            Console.WriteLine("\t   Universal \u2229 A = A");
+            Console.WriteLine();
+            Console.WriteLine("\t7. Idempotence:");
+            //Console.WriteLine("\t==============");
+            Console.WriteLine("\t   A U A = A");
+            Console.WriteLine("\t   A \u2229 A = A");
+            Console.WriteLine();
+            Console.WriteLine("\t8. Dominance: ");
+            //Console.WriteLine("\t============");
+            Console.WriteLine("\t   A U Univeral = Univeral");
+            Console.WriteLine("\t   A \u2229 \u2205 = \u2205");
+            Console.WriteLine();
+
+        }//DisplaySetLaws
+        private static void DisplaySetLawPropertieMenu()
+        {
+            Console.WriteLine("\tSet laws and properties");
+            Console.WriteLine("\t=======================");
+            Console.WriteLine();
+            Console.WriteLine("\t1. Cummutative law");
+            Console.WriteLine("\t2. Associative law");
+            Console.WriteLine("\t3. Distributive law");
+            Console.WriteLine("\t5. DeMorgan's law");
+            Console.WriteLine("\t4. Double complement");
+            Console.WriteLine("\t6. Identity");
+            Console.WriteLine("\t7. Idempotence");
+            Console.WriteLine("\t8. Dominance");
+            Console.WriteLine("\t9. Review laws and properties");
+            Console.WriteLine("\tX. Exit");
+
+            Console.WriteLine();
+        }//DisplaySetLawPropertieMenu
+        private static void DisplaySetlawPropertiesOutcome(TypeOfLawProperty law, ICSet<int> outcomeleft, ICSet<int> outcomeright, ICSet<int> A, ICSet<int> B = default, ICSet<int> C = default, bool isfirst_option = true)
+        {
+            Console.Clear();
+            Console.WriteLine("\tSet law and properties outcome");
+            Console.WriteLine();
+            string leftoutcome = outcomeleft.ToString();
+            string rightoutcome = outcomeright.ToString();
+            string setA = A.ToString();
+            string setB, setC;
+            string option_law = "";
+            string left_option = "";
+            string right_option = "";
+            string sets = "";
+            int max = 0;
+            switch (law)
+            {
+                case TypeOfLawProperty.Cummutativity:
+                    setB = B.ToString();
+                    max = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length);
+                    if(isfirst_option)
+                    {
+                        option_law = "A U B = B U A";
+                        left_option = "A U B";
+                        right_option = "B U A";
+                    }
+                    else
+                    {
+                        option_law = "A \u2229 B = B \u2229 A";
+                        left_option = "A \u2229 B";
+                        right_option = "B \u2229 A";
+                    }
+                    sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}\n" +
+                           $"\t B = {setB.PadRight(max)} |B| = {B.Cardinality}";
+                    break;
+
+                case TypeOfLawProperty.Associative:
+                    setB = B.ToString();
+                    max = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length);
+                    if (isfirst_option)
+                    {
+                        option_law = "A U ( B U C ) = ( A U B) U C";
+                        left_option = "A U ( B U C )";
+                        right_option = "( A U B) U C";
+                    }
+                    else
+                    {
+                        option_law = "A \u2229 ( B \u2229 C ) = (A \u2229 B) \u2229 C";
+                        left_option = "A \u2229 ( B \u2229 C )";
+                        right_option = "(A \u2229 B) \u2229 C";
+                    }
+                    sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}\n" +
+                           $"\t B = {setB.PadRight(max)} |B| = {B.Cardinality}";
+                    break;
+                case TypeOfLawProperty.Distributive:
+                    setB = B.ToString();
+                    setC = C.ToString();
+                    max = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length, setC.Length);
+                    if (isfirst_option)
+                    {
+                        option_law = "A U ( B \u2229 C ) = ( A U B ) \u2229 ( A U C)";
+                        left_option = "A U ( B \u2229 C )";
+                        right_option = "( A U B ) \u2229 ( A U C)";
+                    }
+                    else
+                    {
+                        option_law = "A \u2229 ( B U C ) = ( A \u2229 B ) U ( A \u2229 C)";
+                        left_option = "A \u2229 ( B U C )";
+                        right_option = "( A \u2229 B ) U ( A \u2229 C)";
+                    }
+                    sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}\n" +
+                           $"\t B = {setB.PadRight(max)} |B| = {B.Cardinality}\t" +
+                           $"\t C = {setC.PadRight(max)} |C| = {C.Cardinality}";
+                    break;
+                case TypeOfLawProperty.DoubleComplement:
+                    max = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length);
+                    option_law = "~(~A) = A";
+                    left_option = "~(~A)";
+                    right_option = "A";
+                    sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}";
+                    break;
+                case TypeOfLawProperty.Identity:
+                    setB = B.ToString();
+                    max = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length);
+                    if (isfirst_option)
+                    {
+                        option_law = "\u2205 U A = A";
+                        left_option = "\u2205 U A";
+                        right_option = "A";
+                        sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}\n" +
+                               $"\t \u2205 = {setB.PadRight(max)} |\u2205| = {B.Cardinality}";
+                    }
+                    else
+                    {
+                        option_law = "Universal \u2229 A = A";
+                        left_option = "Universal \u2229 A";
+                        right_option = "A";
+                        sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}\n" +
+                               $"\t Universal = {setB.PadRight(max)} |Universal| = {B.Cardinality}";
+                    }
+
+                    break;
+
+                case TypeOfLawProperty.Idemptotence:
+                    setB = B.ToString();
+                    max = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length);
+                    if (isfirst_option)
+                    {
+                        option_law = "A U A = A";
+                        left_option = "A U A";
+                        right_option = "A";
+                    }
+                    else
+                    {
+                        option_law = "A \u2229 A = A";
+                        left_option = "A \u2229 A";
+                        right_option = "A";
+                    }
+
+                    sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}\n" +
+                           $"\t A = {setB.PadRight(max)} |A| = {B.Cardinality}\t";
+                    break;
+
+                case TypeOfLawProperty.DeMorgan:
+                    setB = B.ToString();
+                    max = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length);
+                    if (isfirst_option)
+                    {
+                        option_law = "~( A U B ) = ~A \u2229 ~B";
+                        left_option = "~( A U B )";
+                        right_option = "~A \u2229 ~B";
+                    }
+                    else
+                    {
+                        option_law = "~( A \u2229 B ) = ~A U ~B";
+                        left_option = "~( A \u2229 B )";
+                        right_option = "~A U ~B";
+                    }
+                    sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}\n" +
+                           $"\t B = {setB.PadRight(max)} |B| = {B.Cardinality}";
+                    break;
+
+                case TypeOfLawProperty.Dominance:
+
+                    setB = B.ToString();
+                    max = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length);
+                    if (isfirst_option)
+                    {
+                        option_law = "A U Univeral = Univeral";
+                        left_option = "A U Univeral";
+                        right_option = "Univeral";
+                        sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}\n" +
+                               $"\t Univeral = {setB.PadRight(max)} |Univeral| = {B.Cardinality}";
+                    }
+                    else
+                    {
+                        option_law = "A \u2229 \u2205 = \u2205";
+                        left_option = "A \u2229 \u2205";
+                        right_option = "\u2205";
+                        sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}\n" +
+                               $"\t \u2205 = {setB.PadRight(max)} |\u2205| = {B.Cardinality}";
+                    }
+                    break;
+                default:
+                    break;
+            }//end switch
+            Console.WriteLine(sets);
+            Console.WriteLine();
+            Console.WriteLine("\t{0} :  {1}", law.ToString(), option_law);
+            Console.WriteLine("\t{0} = ", left_option);
+            Console.WriteLine($"\t  {leftoutcome.PadRight(max)} |{left_option}| = {outcomeleft.Cardinality}");
+            Console.WriteLine("\t{0} = ", right_option);
+            Console.WriteLine($"\t  {rightoutcome.PadRight(max)} |{right_option}| = {outcomeright.Cardinality}");
+            Console.WriteLine();
+        }//DisplaySetlawPropertiesOutcome
+        private static int MaxLength(params int[] lengths)
+        {
+            int max = lengths[0];
+            foreach (var item in lengths)
+            {
+                if (item > max)
+                    max = item;
+            }
+            return max;
+        }
+        #region Ref
+
+        private static void LawOfSetTheory()
+        {
+            #region Unimp
+            //Clear console window
+            Console.Clear();
+            //Display infor to user.
+            Console.WriteLine("  TESTING Laws Of Set Theory");
+            Console.WriteLine("  ===========================");
+            Console.WriteLine("  Note : A generic set of intergers is being used.");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+
+            //Create the sttings
+            var settings = new SetExtractionSettings<int>(",");
+
+            Console.WriteLine("  Creating the set");
+            Console.WriteLine("  ================");
+            //Create the universal set
+            Console.WriteLine("  Universal Set :::::");
+            string uniex_ = "{17,16,16,4,68,1,1,16,4,{12,6,8,6,{8,9,{}}},5,9,4,3,{},{6,8},{6,8,6,8},9,7,3,17,{19,6,19},{6,6,6}}";
+            ICSet<int> universal = new GenericSet<int>(uniex_, settings);
+            Console.WriteLine("  The original string for the universal set will be : ");
+            Console.WriteLine("  ---> {0}", uniex_);
+            Console.WriteLine("  The evaluated set string will be : ");
+            Console.WriteLine("  ---> {0}", universal);
+            Console.WriteLine();
+            Console.WriteLine();
+
+
+            //Empty Set
+            Console.WriteLine("  Empty Set :::::");
+            string emptyex_ = "{}";
+            ICSet<int> emptySet = new GenericSet<int>(emptyex_, settings);
+            Console.WriteLine("  The original string of set C will be : ");
+            Console.WriteLine("  ---> {0}", emptyex_);
+            Console.WriteLine("  The evaluated set string will be : ");
+            Console.WriteLine("  ---> {0}", emptySet);
+            Console.WriteLine();
+            Console.WriteLine();
+
+            //Create set A
+            Console.WriteLine("  Set A :::::");
+            string setAex_ = "{17,17,68,4,{6,6,6},{6,6,6}}";
+            ICSet<int> setA = new GenericSet<int>(setAex_, settings);
+            Console.WriteLine("  The original string of set A will be : ");
+            Console.WriteLine("  ---> {0}", setAex_);
+            Console.WriteLine("  The evaluated set string will be : ");
+            Console.WriteLine("  ---> {0}", setA);
+            Console.WriteLine();
+            Console.WriteLine();
+
+
+            //Create set B
+            Console.WriteLine("  Set B :::::");
+            string setBex_ = "{5,9,4,3,{},{6,8}}";
+            ICSet<int> setB = new GenericSet<int>(setBex_, settings);
+            Console.WriteLine("  The original string of set B will be : ");
+            Console.WriteLine("  ---> {0}", setBex_);
+            Console.WriteLine("  The evaluated set string will be : ");
+            Console.WriteLine("  ---> {0}", setB);
+            Console.WriteLine();
+            Console.WriteLine();
+
+            //Create set C
+            Console.WriteLine("  Set C :::::");
+            string setCex_ = "{{},{6,8},{6,8,6,8},9,7,3,17,{19,6,19},{6,6,6}}";
+            ICSet<int> setC = new GenericSet<int>(setCex_, settings);
+            Console.WriteLine("  The original string of set C will be : ");
+            Console.WriteLine("  ---> {0}", setCex_);
+            Console.WriteLine("  The evaluated set string will be : ");
+            Console.WriteLine("  ---> {0}", setC);
+            Console.WriteLine();
+            Console.WriteLine();
+
+            #endregion Un i,p
+
+            #region done
+            //Dominance
+            Console.WriteLine("  Dominance : ");
+            Console.WriteLine("  ============");
+            Console.WriteLine("  * 1 : A U Univeral = Univeral ::");
+            Console.WriteLine("     A U Univeral ");
+            ICSet<int> domileft1 = setA.Union(universal);//universal.Difference(universal.Difference(setA));
+            Console.WriteLine("  ---> {0}", domileft1);
+            Console.WriteLine("     Univeral");
+            ICSet<int> domiright1 = universal;
+            Console.WriteLine("  ---> {0}", domiright1);
+            Console.WriteLine();
+
+            Console.WriteLine("  * 2 : A \u2229 \u2205 = \u2205 ::");
+            Console.WriteLine("     A \u2229 \u2205");
+            ICSet<int> domileft2 = setA.Intersection(emptySet);//universal.Difference(universal.Difference(setA));
+            Console.WriteLine("  ---> {0}", domileft2);
+            Console.WriteLine("     \u2205");
+            ICSet<int> domiright2 = emptySet;
+            Console.WriteLine("  ---> {0}", domiright2);
+            Console.WriteLine();
+            Console.WriteLine();
+            //Idempotence
+            Console.WriteLine("  Idempotence : ");
+            Console.WriteLine("  ============");
+            Console.WriteLine("  * 1 : A U A = A ::");
+            Console.WriteLine("     A U A ");
+            ICSet<int> idompleft1 = setA.Union(setA);//universal.Difference(universal.Difference(setA));
+            Console.WriteLine("  ---> {0}", idompleft1);
+            Console.WriteLine("     A");
+            ICSet<int> idompleright1 = setA;
+            Console.WriteLine("  ---> {0}", idompleright1);
+            Console.WriteLine();
+
+            Console.WriteLine("  * 2 : A \u2229 A = A ::");
+            Console.WriteLine("     A \u2229 A");
+            ICSet<int> idompleft2 = setA.Intersection(setA);//universal.Difference(universal.Difference(setA));
+            Console.WriteLine("  ---> {0}", idompleft2);
+            Console.WriteLine("     A");
+            ICSet<int> idompright2 = setA;
+            Console.WriteLine("  ---> {0}", idompright2);
+            Console.WriteLine();
+            Console.WriteLine();
+            //Identity
+            Console.WriteLine("  Identity : ");
+            Console.WriteLine("  ============");
+            Console.WriteLine("  * 1 : \u2205 U A = A ::");
+            Console.WriteLine("     \u2205 U A");
+            ICSet<int> identity1left = emptySet.Union(setA);//universal.Difference(universal.Difference(setA));
+            Console.WriteLine("  ---> {0}", identity1left);
+            Console.WriteLine("     A");
+            ICSet<int> identity1right = setA;
+            Console.WriteLine("  ---> {0}", identity1right);
+            Console.WriteLine();
+
+            Console.WriteLine("  * 2 : Uni \u2229 A = A ::");
+            Console.WriteLine("     Uni \u2229 A");
+            ICSet<int> identity2left = universal.Intersection(setA);//universal.Difference(universal.Difference(setA));
+            Console.WriteLine("  ---> {0}", identity2left);
+            Console.WriteLine("     A");
+            ICSet<int> identity2right = setA;
+            Console.WriteLine("  ---> {0}", identity2right);
+            Console.WriteLine();
+            Console.WriteLine();
+            //Demorgan's Laws
+            Console.WriteLine("  DeMorgan's Law : ");
+            Console.WriteLine("  ==================");
+            Console.WriteLine("  * 1 : ~( A U B ) = ~A \u2229 ~B ::");
+            Console.WriteLine("     ~( A U B )");
+            ICSet<int> DeMorgRight1 = (setA.Union(setB)).Complement(universal, out _);
+            Console.WriteLine("  ---> {0}", DeMorgRight1);
+            Console.WriteLine("     ~A \u2229 ~B");
+            ICSet<int> DeMorgLeft1 = setA.Complement(universal, out _).Intersection(setB.Complement(universal, out _));
+            Console.WriteLine("  ---> {0}", DeMorgLeft1);
+            Console.WriteLine();
+
+            Console.WriteLine("  * 2 : ~( A \u2229 B ) = ~A U ~B ::");
+            Console.WriteLine("     ~( A U B )");
+            ICSet<int> DeMorgRight2 = (setA.Intersection(setB)).Complement(universal, out _);
+            Console.WriteLine("  ---> {0}", DeMorgRight2);
+            Console.WriteLine("     ~A \u2229 ~B");
+            ICSet<int> DeMorgLeft2 = setA.Complement(universal, out _).Union(setB.Complement(universal, out _));
+            Console.WriteLine("  ---> {0}", DeMorgLeft2);
+            Console.WriteLine();
+            Console.WriteLine();
+
+            //Set laws
+            Console.WriteLine("  SET LAWS");
+            Console.WriteLine("  ===========");
+            Console.WriteLine();
+            Console.WriteLine();
+            //Cummutativity
+            Console.WriteLine("  Cummutative law :");
+            Console.WriteLine("  ================");
+            Console.WriteLine("  A U B = B U A");
+            ICSet<int> cummutativeA = setA.Union(setB);
+            Console.WriteLine("     A U B :");
+            Console.WriteLine("  ---> {0}", cummutativeA);
+            ICSet<int> cummutativeB = setB.Union(setA);
+            Console.WriteLine("     B U A :");
+            Console.WriteLine("  ---> {0}", cummutativeB);
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("  Associative Laws : ");
+            Console.WriteLine("  ====================");
+            Console.WriteLine("  * 1: A U ( B U C ) = ( A U B) U C ::");
+            Console.WriteLine("     A U ( B U C ) : ");
+            ICSet<int> leftUnions = setA.Union(setB.Union(setC));
+            Console.WriteLine("  ---> {0}", leftUnions);
+            Console.WriteLine("     ( A U B) U C : ");
+            ICSet<int> rightUnions = (setA.Union(setB)).Union(setC);
+            Console.WriteLine("  ---> {0}", rightUnions);
+
+            Console.WriteLine();
+            Console.WriteLine($"  * 2 : A \u2229  ( B \u2229 C ) = (A \u2229 B) \u2229 C ::");
+            Console.WriteLine("     A \u2229  ( B \u2229 C ) : ");
+            ICSet<int> leftintersection = setA.Intersection(setB.Intersection(setC));
+            Console.WriteLine("  ---> {0}", leftintersection);
+            Console.WriteLine("     (A \u2229 B) \u2229 C : ");
+            ICSet<int> rightintersection = (setA.Intersection(setB)).Intersection(setC);
+            Console.WriteLine("  ---> {0}", rightintersection);
+            Console.WriteLine();
+            Console.WriteLine();
+
+            //Distributivity
+            Console.WriteLine("  Distributive Law : ");
+            Console.WriteLine("  ====================");
+            Console.WriteLine("  * 1 : A U ( B \u2229 C ) = ( A U B ) \u2229 ( A U C) ::");
+            Console.WriteLine("     A U ( B \u2229 C )");
+            ICSet<int> leftdisA = setA.Union(setB.Intersection(setC));
+            Console.WriteLine("  ---> {0}", leftdisA);
+            Console.WriteLine("     ( A U B ) \u2229 ( A U C)");
+            ICSet<int> rightdisA = (setA.Union(setB)).Intersection(setA.Union(setC));
+            Console.WriteLine("  ---> {0}", rightdisA);
+            Console.WriteLine();
+
+            Console.WriteLine("  * 2 : A \u2229 ( B U C ) = ( A \u2229 B ) U ( A \u2229 C) ::");
+            Console.WriteLine("     A \u2229 ( B U C )");
+            ICSet<int> leftdisB = setA.Intersection(setB.Union(setC));
+            Console.WriteLine("  ---> {0}", leftdisB);
+            Console.WriteLine("     ( A \u2229 B ) U ( A \u2229 C)");
+            ICSet<int> rightdisB = (setA.Intersection(setB)).Union(setA.Intersection(setC));
+            Console.WriteLine("  ---> {0}", rightdisB);
+            Console.WriteLine();
+            Console.WriteLine();
+
+            //Associative
+
+
+
+
+            //Double Complement
+            Console.WriteLine("  Double complement : ");
+            Console.WriteLine("  =====================");
+            Console.WriteLine("  ~(~A) = A ::");
+            Console.WriteLine("     ~(~A)");
+            ICSet<int> complementleft = setA.Complement(universal, out _).Complement(universal, out _);//universal.Difference(universal.Difference(setA));
+            Console.WriteLine("  ---> {0}", complementleft);
+            Console.WriteLine("     A");
+            ICSet<int> complementright = setA;
+            Console.WriteLine("  ---> {0}", complementright);
+            Console.WriteLine();
+            Console.WriteLine();
+
+            #endregion done
+
+            AnyKey();
+
+            //Set equalities
+            Console.WriteLine("  Testing set operations with a generic set class");
+            Console.WriteLine("  =================================================");
+            Console.WriteLine("  Note : A generic set of intergers is being used");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("  Arguments that prove logical equivalences can be directly translated into arguments that prove set equalities.");
+            Console.WriteLine();
+            Console.WriteLine("  Set Equalities of note :");
+            Console.WriteLine("  1. A - B =  A \u2229 ~B");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine("  2. A \u2206 B =  ( A U B ) - ( A \u2229 B )");
+            Console.OutputEncoding = System.Text.Encoding.Default;
+            Console.WriteLine();
+            Console.WriteLine("  Recall that : ");
+            Console.WriteLine("  Universal set = : {0}", universal);
+            Console.WriteLine("  Set A = : {0}", setA);
+            Console.WriteLine("  Set B = : {0}", setB);
+            Console.WriteLine();
+            Console.WriteLine();
+
+            Console.WriteLine("  1. A - B =  A \u2229 ~B");
+            Console.WriteLine("     A - B");
+            ICSet<int> left1 = setA.Difference(setB);
+            Console.WriteLine("  ---> {0}", left1);
+            Console.WriteLine("     A \u2229 ~B");
+            ICSet<int> right1 = setA.Intersection(setB.Complement(universal, out _));
+            Console.WriteLine("  ---> {0}", right1);
+            Console.WriteLine();
+            Console.WriteLine();
+
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine("  2. A \u2206 B =  ( A U B ) - ( A \u2229 B )");
+            Console.WriteLine("     A \u2206 B");
+            Console.OutputEncoding = System.Text.Encoding.Default;
+            //ISet<int> left2 = setA.Difference(setB);
+            Console.WriteLine("  ---> {0}", "To be implemented......");
+            Console.WriteLine("     ( A U B ) - ( A \u2229 B )");
+            ICSet<int> right2 = (setA.Union(setB).Difference(setA.Intersection(setB)));
+            Console.WriteLine("  ---> {0}", right2);
+            AnyKey();
+        }//TestSetLaws
+
+
+
+        #endregion Ref
     }//class
+    public enum TypeOfLawProperty
+    {
+        Cummutativity,
+        Associative,
+        Distributive,
+        DoubleComplement,
+        Identity,
+        Idemptotence,
+        DeMorgan,
+        Dominance
+
+    }//TypeOfLawProperty
 }//namespace
