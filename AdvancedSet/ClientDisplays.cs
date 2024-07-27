@@ -25,12 +25,18 @@ namespace AdvancedSet
             Console.WriteLine("\tThis application is a more refined version of the \"Simple set\" application. You can find it here:");
             Console.WriteLine("\tSource code : https://github.com/Shisui-Pho/Custom_Sets/tree/master/SimpleSets");
             Console.WriteLine("\tApplication : https://github.com/Shisui-Pho/Custom_Sets/tree/master/SimpleSets/App");
+            Console.WriteLine("\tThis application is title \"Advanced set\" which means the advanced version of \"Simple set\". You can find it here:");
+            Console.WriteLine("\tSource code : https://github.com/Shisui-Pho/Custom_Sets/tree/master/AdvancedSet");
+            Console.WriteLine("\tApplication : https://github.com/Shisui-Pho/Custom_Sets/tree/master/AdvancedSet/App");
+            Console.WriteLine("\tThe \"Advanced set\" uses the \"SetLibrary\" project(library) which is developed by the same person. You can find it here:");
+            Console.WriteLine("\tSource code : https://github.com/Shisui-Pho/Advance-Custom-Set/tree/master/SetLibrary");
+            Console.WriteLine("\tDll file    : https://github.com/Shisui-Pho/Advance-Custom-Set/tree/master/SetLibrary/Dll");
             Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("\tImprovements");
             Console.WriteLine("\t============");
-            Console.WriteLine("\t1. Now you can nest elements as much as you want in any way.");
+            Console.WriteLine("\t1. Now you can nest elements as much as you want in any way(biggest improvement).");
             Console.WriteLine("\t2. You modify a given set by removing and adding elements.");
             Console.WriteLine("\t3. More advanced set operations have been added.");
             Console.WriteLine("\t3. More sets properties have been added.");
@@ -40,8 +46,9 @@ namespace AdvancedSet
             Console.WriteLine("\t7. Improved overall perfomance of the application.");
 
             Console.WriteLine();
-            Console.WriteLine("\tThis application is title \"Advanced set\" which means the advanced version of \"Simple set\", You can found it here:");
-            Console.WriteLine("\tSource code : {}");
+            Console.WriteLine("\tHOPE YOU ENJOY USING THE APPLICATION");
+            AnyKey(KeyType.Continue);
+            ClearConsoleWindow();
         }//Welcome
         private static void DisplaySets(ISetCollection<int> collection, string header = "Current sets")
         {
@@ -208,7 +215,7 @@ namespace AdvancedSet
             Console.WriteLine("\t8.  Clear all sets.");
             Console.WriteLine("\t9.  Reset set naming.");
             Console.WriteLine("\t10. Learn more about sets.");
-            Console.WriteLine("\t11. About the developer.");
+            Console.WriteLine("\t11. Developer's Information.");
             Console.WriteLine("\tX.  Exit.");
         }//DisplayMenuOptions
         private static void DisplaSetsWarning(SetWarting warning)
