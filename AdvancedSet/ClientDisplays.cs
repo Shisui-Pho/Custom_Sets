@@ -3,6 +3,7 @@ using SetLibrary.Collections;
 using SetLibrary.Generic;
 using SetLibrary.Operations;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace AdvancedSet
@@ -49,6 +50,15 @@ namespace AdvancedSet
             expression = "{5,6,1,1,1,2,4,5,{2,1,2,3},{3,2,1,1,2,3,2,3,1,2,3}}";
             set = new GenericSet<int>(expression, settings);
             sets.Add(set);
+            
+            expression = "{5,6,{1,2,3}}";
+            set = new GenericSet<int>(expression, settings);
+            sets.Add(set);
+
+            expression = "{1,2,4,5,6}";
+            set = new GenericSet<int>(expression, settings);
+            sets.Add(set);
+
         }//AddTestData
         private static void DisplayNewSetHeader(ISetCollection<int> collection)
         {
@@ -293,8 +303,8 @@ namespace AdvancedSet
             Console.WriteLine("\t1. Cummutative law");
             Console.WriteLine("\t2. Associative law");
             Console.WriteLine("\t3. Distributive law");
-            Console.WriteLine("\t5. DeMorgan's law");
             Console.WriteLine("\t4. Double complement");
+            Console.WriteLine("\t5. DeMorgan's law");
             Console.WriteLine("\t6. Identity");
             Console.WriteLine("\t7. Idempotence");
             Console.WriteLine("\t8. Dominance");
@@ -307,6 +317,7 @@ namespace AdvancedSet
         {
             Console.Clear();
             Console.WriteLine("\tSet law and properties outcome");
+            Console.WriteLine("\t==============================");
             Console.WriteLine();
             string leftoutcome = outcomeleft.ToString();
             string rightoutcome = outcomeright.ToString();
@@ -316,12 +327,13 @@ namespace AdvancedSet
             string left_option = "";
             string right_option = "";
             string sets = "";
-            int max = 0;
+            int max_length = 0;
+
             switch (law)
             {
                 case TypeOfLawProperty.Cummutativity:
                     setB = B.ToString();
-                    max = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length);
+                    max_length = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length);
                     if(isfirst_option)
                     {
                         option_law = "A U B = B U A";
@@ -334,37 +346,37 @@ namespace AdvancedSet
                         left_option = "A \u2229 B";
                         right_option = "B \u2229 A";
                     }
-                    sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}\n" +
-                           $"\t B = {setB.PadRight(max)} |B| = {B.Cardinality}";
+                    sets = $"\t A = {setA.PadRight(max_length)} |A| = {A.Cardinality}\n" +
+                           $"\t B = {setB.PadRight(max_length)} |B| = {B.Cardinality}";
                     break;
 
                 case TypeOfLawProperty.Associative:
                     setB = B.ToString();
-                    max = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length);
+                    max_length = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length);
                     if (isfirst_option)
                     {
                         option_law = "A U ( B U C ) = ( A U B) U C";
                         left_option = "A U ( B U C )";
-                        right_option = "( A U B) U C";
+                        right_option = "( A U B ) U C";
                     }
                     else
                     {
                         option_law = "A \u2229 ( B \u2229 C ) = (A \u2229 B) \u2229 C";
                         left_option = "A \u2229 ( B \u2229 C )";
-                        right_option = "(A \u2229 B) \u2229 C";
+                        right_option = "( A \u2229 B ) \u2229 C";
                     }
-                    sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}\n" +
-                           $"\t B = {setB.PadRight(max)} |B| = {B.Cardinality}";
+                    sets = $"\t A = {setA.PadRight(max_length)} |A| = {A.Cardinality}\n" +
+                           $"\t B = {setB.PadRight(max_length)} |B| = {B.Cardinality}";
                     break;
                 case TypeOfLawProperty.Distributive:
                     setB = B.ToString();
                     setC = C.ToString();
-                    max = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length, setC.Length);
+                    max_length = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length, setC.Length);
                     if (isfirst_option)
                     {
-                        option_law = "A U ( B \u2229 C ) = ( A U B ) \u2229 ( A U C)";
+                        option_law = "A U ( B \u2229 C ) = ( A U B ) \u2229 ( A U C )";
                         left_option = "A U ( B \u2229 C )";
-                        right_option = "( A U B ) \u2229 ( A U C)";
+                        right_option = "( A U B ) \u2229 ( A U C )";
                     }
                     else
                     {
@@ -372,42 +384,42 @@ namespace AdvancedSet
                         left_option = "A \u2229 ( B U C )";
                         right_option = "( A \u2229 B ) U ( A \u2229 C)";
                     }
-                    sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}\n" +
-                           $"\t B = {setB.PadRight(max)} |B| = {B.Cardinality}\t" +
-                           $"\t C = {setC.PadRight(max)} |C| = {C.Cardinality}";
+                    sets = $"\t A = {setA.PadRight(max_length)} |A| = {A.Cardinality}\n" +
+                           $"\t B = {setB.PadRight(max_length)} |B| = {B.Cardinality}\n" +
+                           $"\t C = {setC.PadRight(max_length)} |C| = {C.Cardinality}";
                     break;
                 case TypeOfLawProperty.DoubleComplement:
-                    max = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length);
-                    option_law = "~(~A) = A";
-                    left_option = "~(~A)";
+                    max_length = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length);
+                    option_law = "~ ( ~ A ) = A";
+                    left_option = "~ ( ~ A )";
                     right_option = "A";
-                    sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}";
+                    sets = $"\t A = {setA.PadRight(max_length)} |A| = {A.Cardinality}";
                     break;
                 case TypeOfLawProperty.Identity:
                     setB = B.ToString();
-                    max = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length);
+                    max_length = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length);
                     if (isfirst_option)
                     {
                         option_law = "\u2205 U A = A";
                         left_option = "\u2205 U A";
                         right_option = "A";
-                        sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}\n" +
-                               $"\t \u2205 = {setB.PadRight(max)} |\u2205| = {B.Cardinality}";
+                        sets = $"\t A = {setA.PadRight(max_length)} |A| = {A.Cardinality}\n" +
+                               $"\t \u2205 = {setB.PadRight(max_length)} |\u2205| = {B.Cardinality}";
                     }
                     else
                     {
                         option_law = "Universal \u2229 A = A";
                         left_option = "Universal \u2229 A";
                         right_option = "A";
-                        sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}\n" +
-                               $"\t Universal = {setB.PadRight(max)} |Universal| = {B.Cardinality}";
+                        sets = $"\t A = {setA.PadRight(max_length)} |A| = {A.Cardinality}\n" +
+                               $"\t Universal = {setB.PadRight(max_length)} |Universal| = {B.Cardinality}";
                     }
 
                     break;
 
                 case TypeOfLawProperty.Idemptotence:
-                    setB = B.ToString();
-                    max = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length);
+                    setA = A.ToString();
+                    max_length = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length);
                     if (isfirst_option)
                     {
                         option_law = "A U A = A";
@@ -421,60 +433,71 @@ namespace AdvancedSet
                         right_option = "A";
                     }
 
-                    sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}\n" +
-                           $"\t A = {setB.PadRight(max)} |A| = {B.Cardinality}\t";
+                    sets = $"\t A = {setA.PadRight(max_length)} |A| = {A.Cardinality}\n";
                     break;
 
                 case TypeOfLawProperty.DeMorgan:
                     setB = B.ToString();
-                    max = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length);
+                    max_length = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length);
                     if (isfirst_option)
                     {
-                        option_law = "~( A U B ) = ~A \u2229 ~B";
-                        left_option = "~( A U B )";
-                        right_option = "~A \u2229 ~B";
+                        option_law = "~ ( A U B ) = ~ A \u2229 ~ B";
+                        left_option = "~ ( A U B )";
+                        right_option = "~ A \u2229 ~ B";
                     }
                     else
                     {
-                        option_law = "~( A \u2229 B ) = ~A U ~B";
-                        left_option = "~( A \u2229 B )";
-                        right_option = "~A U ~B";
+                        option_law = "~ ( A \u2229 B ) = ~ A U ~ B";
+                        left_option = "~ ( A \u2229 B )";
+                        right_option = "~ A U ~ B";
                     }
-                    sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}\n" +
-                           $"\t B = {setB.PadRight(max)} |B| = {B.Cardinality}";
+                    sets = $"\t A = {setA.PadRight(max_length)} |A| = {A.Cardinality}\n" +
+                           $"\t B = {setB.PadRight(max_length)} |B| = {B.Cardinality}";
                     break;
 
                 case TypeOfLawProperty.Dominance:
 
                     setB = B.ToString();
-                    max = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length);
+                    max_length = MaxLength(leftoutcome.Length, rightoutcome.Length, setA.Length, setB.Length);
                     if (isfirst_option)
                     {
                         option_law = "A U Univeral = Univeral";
                         left_option = "A U Univeral";
                         right_option = "Univeral";
-                        sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}\n" +
-                               $"\t Univeral = {setB.PadRight(max)} |Univeral| = {B.Cardinality}";
+                        sets = $"\t A = {setA.PadRight(max_length)} |A| = {A.Cardinality}\n" +
+                               $"\t Univeral = {setB.PadRight(max_length)} |Univeral| = {B.Cardinality}";
                     }
                     else
                     {
                         option_law = "A \u2229 \u2205 = \u2205";
                         left_option = "A \u2229 \u2205";
                         right_option = "\u2205";
-                        sets = $"\t A = {setA.PadRight(max)} |A| = {A.Cardinality}\n" +
-                               $"\t \u2205 = {setB.PadRight(max)} |\u2205| = {B.Cardinality}";
+                        sets = $"\t A = {setA.PadRight(max_length)} |A| = {A.Cardinality}\n" +
+                               $"\t \u2205 = {setB.PadRight(max_length)} |\u2205| = {B.Cardinality}";
                     }
                     break;
                 default:
                     break;
             }//end switch
+
+            //Gets the max length between the two options
+            int max_pad = MaxLength(left_option.Length, right_option.Length) + 4;
+            max_length += 5;
+
+            string left_card = $"|{left_option}|";
+            string right_card = $"|{right_option}|";
+            //Displaying
             Console.WriteLine(sets);
             Console.WriteLine();
             Console.WriteLine("\t{0} :  {1}", law.ToString(), option_law);
-            Console.WriteLine("\t{0} = ", left_option);
-            Console.WriteLine($"\t  {leftoutcome.PadRight(max)} |{left_option}| = {outcomeleft.Cardinality}");
-            Console.WriteLine("\t{0} = ", right_option);
-            Console.WriteLine($"\t  {rightoutcome.PadRight(max)} |{right_option}| = {outcomeright.Cardinality}");
+            Console.WriteLine();
+            Console.Write($"  left side   : {left_option.PadRight(max_pad)} = ");
+            Console.Write($"  {leftoutcome.PadRight(max_length)} {left_card.PadRight(max_pad)} = {outcomeleft.Cardinality}");
+            Console.WriteLine();
+            Console.Write($"  right side  : {right_option.PadRight(max_pad)} = ");
+            Console.Write($"  {rightoutcome.PadRight(max_length)} {right_card.PadRight(max_pad)} = {outcomeright.Cardinality}");
+            Console.WriteLine();
+            Console.WriteLine();
             Console.WriteLine();
         }//DisplaySetlawPropertiesOutcome
         private static int MaxLength(params int[] lengths)
@@ -487,6 +510,21 @@ namespace AdvancedSet
             }
             return max;
         }
+        private static void DisplayNotUniversalError(List<ICSet<int>> sets)
+        {
+            Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine("\tThe operation cannot be perfomed because one or more of the sets: ");
+            for (int i = 0; i < sets.Count - 1; i++)
+            {
+                Console.WriteLine("\t{0}", sets[0]);
+            }
+            Console.WriteLine();
+            Console.WriteLine("\t is/re not part of the universal set: ");
+            Console.WriteLine("\t{0}", sets[sets.Count - 1]);
+            Console.WriteLine();
+            AnyKey(KeyType.Retry);
+        }//NotUniversalError
         #region Ref
 
         private static void LawOfSetTheory()

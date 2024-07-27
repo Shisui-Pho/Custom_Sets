@@ -18,7 +18,7 @@ namespace AdvancedSet
             //Setting up the back ground
             Console.ForegroundColor = ConsoleColor.Black;
             Console.BackgroundColor = ConsoleColor.White;
-            Console.Clear();
+            ClearConsoleWindow();
 
             //Create the set collection
             ISetCollection<int> collection = new SetCollection<int>();
@@ -38,7 +38,7 @@ namespace AdvancedSet
             do
             {
                 //Display menu here
-                Console.Clear();
+                ClearConsoleWindow();
                 Console.WriteLine("\tSet Application");
                 Console.WriteLine("\t===============");
                 Console.WriteLine();
@@ -124,7 +124,7 @@ namespace AdvancedSet
             if (should_add)
             {
                 //sets.Add(newset);
-                Console.Clear();
+                ClearConsoleWindow();
                 Console.WriteLine("\tThe Follwowing set will be added : ");
                 Console.WriteLine("\n\tOriginal expression : {0}", setString);
                 Console.WriteLine("\tEvaluated expression : {0}", newset);
@@ -149,7 +149,7 @@ namespace AdvancedSet
         #region Removing a set
         private static void RemoveSet(ISetCollection<int> sets)
         {
-            Console.Clear();
+            ClearConsoleWindow();
             Console.WriteLine("\tRemoving sets");
             Console.WriteLine("\t=============");
             DisplaSetsWarning(SetWarting.Remove_Set);
@@ -184,7 +184,7 @@ namespace AdvancedSet
         }//RemoveSet
         private static void RemoveSet(ISetCollection<int> sets, string setName)
         {
-            Console.Clear();
+            ClearConsoleWindow();
             Console.WriteLine("\tCONFIRMATION");
             Console.WriteLine("\t============");
             Console.WriteLine();
@@ -220,7 +220,7 @@ namespace AdvancedSet
             string error = "";
             do
             {
-                Console.Clear();
+                ClearConsoleWindow();
                 Console.WriteLine("\tModifying a set");
                 Console.WriteLine("\t================");
                 Console.WriteLine();
@@ -268,7 +268,7 @@ namespace AdvancedSet
             int elem;
             do
             {
-                Console.Clear();
+                ClearConsoleWindow();
                 Console.WriteLine($"\tModifying the set \"{name}\"");
                 Console.WriteLine();
                 int count = set.ElementString.Length;
@@ -377,73 +377,8 @@ namespace AdvancedSet
             name = name.Replace(" ", "");//Remove spaces
             return sets.FindSetByName(name);
         }//GetAndValidateInput
-        //private static List<ICSet<int>> GetInputSetCollection(InputTypeFunction type,ISetCollection<int> sets, out ICSet<int> setA, out ICSet<int> setB, out Operation operation, delDisplayInfo_Func info = null, int count_loop = 2)
-        //{
-        //    string setAName = "";
-        //    string setBName = "";
-             
-        //    setA = setB = null;
-        //    operation = Operation.Cancelled;
-        //    do
-        //    {
-        //        Console.Clear();
-        //        Console.WriteLine($"\tChecking for {type.ToString()}");
-        //        Console.WriteLine("\t====================");
-
-        //        //Display information
-        //        info?.Invoke();
-
-        //        //Display the sets
-
-        //        DisplaySets(sets);
-        //        Console.ForegroundColor = ConsoleColor.Green;
-        //        switch (type)
-        //        {
-        //            case InputTypeFunction.subsets:
-        //                Console.WriteLine($"\tWe will use setA to represent the set which is supposed to be a subset of setB.");
-        //                break;
-        //            case InputTypeFunction.elements:
-        //                Console.WriteLine("\tWe will use setA as the container set and setB as the element set.");
-        //                break;
-        //            case InputTypeFunction.operations:
-        //                Console.WriteLine("\tWe will use setA for the set on the left and setB for the set at the right");
-        //                break;
-        //            case InputTypeFunction.Properties | InputTypeFunction.set_laws:
-        //                Console.WriteLine("\tWe will user setA \"A\" and setB for \"B\", just like in the explanation");
-        //                break;
-        //        }//end switch
-        //        Console.WriteLine("\tChose name from the above set(s). The name has to match one of the name above");
-        //        Console.ForegroundColor = ConsoleColor.Black;
-        //        Console.WriteLine();
-        //        Console.WriteLine("\tPress \"-1\" to exit.");
-        //        Console.WriteLine();
-
-        //        if (setAName != "")
-        //        {
-        //            //Display the name of setA
-        //            Console.WriteLine("\t\tsetA = {0}", setAName);
-        //            Console.WriteLine();
-        //            setB = GetAndValidateInputForSetName("\tsetB", sets, ref setBName);
-        //            if (setB == default && setBName != "-1")
-        //                setBName = "";
-        //            else
-        //                break;//Here means that the name is accurate or the user decided to quit the operation.
-        //        }
-        //        else
-        //        {
-        //            setA = GetAndValidateInputForSetName("\tSetA", sets, ref setAName);
-        //            if (setAName == "-1")
-        //                break;//Here the user decided to end the operation
-        //            if (setA == default && setAName != "-1")
-        //                setAName = "";
-        //        }//end if
-        //    } while (true);
-        //    if (setA != null && setB != null)
-        //        operation = Operation.Continue;
-
-        //    return default;
-        //}//GettingInput
-        private static List<ICSet<int>> GetInputSetCollection(InputTypeFunction type, ISetCollection<int> sets,out Operation operation, delDisplayInfo_Func info = null, int numberOfSets = 2)
+        
+        private static List<ICSet<int>> GetInputSetCollection(InputTypeFunction type, ISetCollection<int> sets,out Operation operation, delDisplayInfo_Func info = null, int numberOfSets = 2, bool islast_universal = false)
         {
             string setName = "";
 
@@ -462,7 +397,7 @@ namespace AdvancedSet
                     break;
                 }
 
-                Console.Clear();
+                ClearConsoleWindow();
                 Console.WriteLine($"\tChecking for {type.ToString()}");
                 Console.WriteLine("\t====================");
 
@@ -498,6 +433,8 @@ namespace AdvancedSet
                 //Display the current set and get the read the next set
                 string next_entry = ListEntriesAndGetNextEntry(setNames);
 
+                if (islast_universal && (setNames.Count + 1) >= numberOfSets)
+                    next_entry = "Universal";
                 #endregion Prompt
 
                 Console.WriteLine();
@@ -539,7 +476,7 @@ namespace AdvancedSet
         {
             do
             {
-                Console.Clear();
+                ClearConsoleWindow();
                 Console.WriteLine("\tChecking for elements.");
                 Console.WriteLine("\t======================");
                 Console.WriteLine();
@@ -570,7 +507,7 @@ namespace AdvancedSet
             do
             {
                 var output_sets = GetInputSetCollection(InputTypeFunction.elements, sets, out Operation operation);
-                Console.Clear();
+                ClearConsoleWindow();
                 if (operation == Operation.Cancelled)
                     break;
                 else
@@ -605,7 +542,7 @@ namespace AdvancedSet
             string error = "";
             do
             {
-                Console.Clear();
+                ClearConsoleWindow();
                 Console.WriteLine("\tChecking with elements");
                 Console.WriteLine("\t======================");
 
@@ -667,7 +604,7 @@ namespace AdvancedSet
             {
                 if (opr == Operation.Cancelled)
                     break;
-                Console.Clear();
+                ClearConsoleWindow();
                 Console.WriteLine("\tSet operators");
                 Console.WriteLine("\t=============");
                 Console.WriteLine();
@@ -738,7 +675,7 @@ namespace AdvancedSet
             var loop = false;
             do
             {
-                Console.Clear();
+                ClearConsoleWindow();
                 Console.WriteLine("\tSet complement.");
                 Console.WriteLine("\t===============");
                 Console.WriteLine();
@@ -797,23 +734,12 @@ namespace AdvancedSet
             AnyKey(KeyType.Continue);
             do
             {
-                Console.Clear();
+                //ClearConsoleWindow();
                 DisplaySetLawPropertieMenu();
                 string option = Inputs.ReadLineString();
 
                 switch (option)
                 {
-                    /*  Console.WriteLine("\t1. Cummutative law");
-                        Console.WriteLine("\t2. Associative law");
-                        Console.WriteLine("\t3. Distributive law");
-                        Console.WriteLine("\t5. DeMorgan's law");
-                        Console.WriteLine("\t4. Double complement");
-                        Console.WriteLine("\t6. Identity");
-                        Console.WriteLine("\t7. Idempotence");
-                        Console.WriteLine("\t8. Dominance");
-                        Console.WriteLine("\t9. Review laws and properties");
-                        Console.WriteLine("\tX. Exit");
-            */
                     case "1":
                         CummutativeLaw(sets);
                         break;                    
@@ -824,35 +750,35 @@ namespace AdvancedSet
                         Distributive(sets);
                         break;                    
                     case "4":
-
+                        DoubleComplement(sets);
                         break;                    
                     case "5":
-
+                        DeMorgan(sets);
                         break;                    
                     case "6":
-
+                        Identity(sets);
                         break;                    
                     case "7":
-
+                        Idempotence(sets);
                         break;                    
                     case "8":
-
+                        Dominance(sets);
                         break;                    
                     case "9":
-                        Console.Clear();
+                        ClearConsoleWindow();
                         DisplaySetLaws();
                         AnyKey(KeyType.Continue);
                         break;
                     case "X":
+                        AnyKey(KeyType.Exit);
                         return;
-                    default:
-                        break;
                 }//end switch
             } while (true);
         }//PerformSetLaws
+        #region Laws implementation
         private static void CummutativeLaw(ISetCollection<int> sets)
         {
-            Console.Clear();
+            ClearConsoleWindow();
             Console.WriteLine("\t  Cummutative law:");
             Console.WriteLine("\t  ==================");
             Console.WriteLine();
@@ -888,7 +814,7 @@ namespace AdvancedSet
         }//CummutativeLaw
         private static void Distributive(ISetCollection<int> sets)
         {
-            Console.Clear();
+            ClearConsoleWindow();
             Console.WriteLine("\t  Distributive law:");
             Console.WriteLine("\t  ================");
             Console.WriteLine();
@@ -926,7 +852,7 @@ namespace AdvancedSet
         }
         private static void Associative(ISetCollection<int> sets)
         {
-            Console.Clear();
+            ClearConsoleWindow();
             Console.WriteLine("\t Associative law:");
             Console.WriteLine("\t =================");
             Console.WriteLine("\t1. A U ( B U C ) = ( A U B) U C");
@@ -962,54 +888,242 @@ namespace AdvancedSet
         }
         private static void DeMorgan(ISetCollection<int> sets)
         {
-            Console.Clear();
+            ClearConsoleWindow();
             Console.WriteLine("\t5. DeMorgan's Law:");
             Console.WriteLine("\t====================");
             Console.WriteLine("\tNote: The following law will hold true <=> both setA and setB are in a universal setC");
             Console.WriteLine();
-            Console.WriteLine("\t1. ~( A U B ) = ~A \u2229 ~B");
-            Console.WriteLine("\t2. ~( A \u2229 B ) = ~A U ~B");
+            Console.WriteLine("\t1. ~ ( A U B ) = ~ A \u2229 ~ B");
+            Console.WriteLine("\t2. ~ ( A \u2229 B ) = ~ A U ~ B");
             Console.WriteLine("\tX. Exit");
+            Console.WriteLine();
+            string option = Inputs.ReadLineString();
+            if (option == "X" && option != "1" && option != "2")
+                return;
+            
+            //Read the sets
+            var output_sets = GetInputSetCollection(InputTypeFunction.Properties | InputTypeFunction.set_laws, sets, out Operation opr, numberOfSets: 3, islast_universal: true);
+            if (opr == Operation.Cancelled)
+                return;
+
+            var setA = output_sets[0]; var setB = output_sets[1]; var universal = output_sets[2];
+            ICSet<int> outcomeleft, outcomeright = default;
+            bool isFirstOption = false;
+            bool isValid;
+            if (option == "1")
+            {
+                //For the left side
+                outcomeleft = setA.Union(setB);
+                outcomeleft = outcomeleft.Complement(universal, out isValid);
+                if(!isValid)
+                    goto Invalid;
+                //For the right side
+                setA = setA.Complement(universal, out _);
+                setB = setB.Complement(universal, out _);
+                outcomeright = setB.Intersection(setA);
+                isFirstOption = true;
+                
+            }
+            else
+            {
+                //For the left side
+                outcomeleft = setA.Intersection(setB);
+                outcomeleft = outcomeleft.Complement(universal, out isValid);
+                if(!isValid)
+                    goto Invalid;
+                //For the right side
+                setA = setA.Complement(universal, out _);
+                setB = setB.Complement(universal, out _);
+                outcomeright = setB.Union(setA);
+            }
+
+            Invalid:
+            if (!isValid)
+            {
+                DisplayNotUniversalError(output_sets);
+                return;
+            }
+                
+            DisplaySetlawPropertiesOutcome(TypeOfLawProperty.DeMorgan, outcomeleft, outcomeright, setA, setB, isfirst_option: isFirstOption);
+            AnyKey(KeyType.Continue);
+        }//De Morgan's law
+        private static void DoubleComplement(ISetCollection<int> sets)
+        {
+            ClearConsoleWindow();
+            Console.WriteLine("\t  Double commplement:");
+            Console.WriteLine("\t  ====================");
+            Console.WriteLine("\tNote: The following law will hold true <=> setA are in a universal set");
+            Console.WriteLine();
+            Console.WriteLine("\t ~ ( ~ A ) = A ");
+            AnyKey(KeyType.Continue);
+
+            var output_sets = GetInputSetCollection(InputTypeFunction.set_laws | InputTypeFunction.Properties, sets, out Operation opr, islast_universal: true);
+
+            if (opr == Operation.Cancelled)
+                return;
+
+            var setA = output_sets[0]; var universal = output_sets[1];
+
+            var outcome = setA.Complement(universal, out bool isUniversal);
+
+            if (!isUniversal)
+            {
+                DisplayNotUniversalError(output_sets);
+                return;
+            }
+            outcome = outcome.Complement(universal, out _);
+
+
+            DisplaySetlawPropertiesOutcome(TypeOfLawProperty.DoubleComplement, outcome, setA, setA);
+
+            AnyKey(KeyType.Continue);
+        }//DoubleComplement
+        private static void Identity(ISetCollection<int> sets)
+        {
+            ClearConsoleWindow();
+            Console.WriteLine("\t  Identity:");
+            Console.WriteLine("\t  ==================");
+            Console.WriteLine();
+            Console.WriteLine("\t1. \u2205 U A = A");
+            Console.WriteLine("\t2. Universal \u2229 A = A");
+            Console.WriteLine("\tX. Exit");
+            Console.WriteLine();
+            string option = Inputs.ReadLineString();
+
+            if (option == "X" && option != "1" && option != "2")
+                return;
+
+            List<ICSet<int>> output_sets = new List<ICSet<int>>();
+            Operation opr;
+            if (option == "2")
+                output_sets = GetInputSetCollection(InputTypeFunction.set_laws | InputTypeFunction.Properties, sets, out opr, islast_universal: true);
+            else
+            {
+                output_sets = GetInputSetCollection(InputTypeFunction.set_laws | InputTypeFunction.Properties, sets, out opr, numberOfSets: 1);
+                output_sets.Add(new GenericSet<int>(sets[0].Settings));//Add an empty set
+            }
+            if (opr == Operation.Cancelled)
+                return;
+
+            var setA = output_sets[0]; 
+            var setB = output_sets[1];//This can either be a universal or an empty set
+            bool isFirstOption = true;
+            ICSet<int> outcome_left, outcome_right = setA;
+            Console.WriteLine("\t1. \u2205 U A = A");
+            Console.WriteLine("\t2. Universal \u2229 A = A");
+            if (option == "1")
+            {
+                outcome_left = setA.Union(setB);
+
+            }
+            else
+            {
+                setA.Complement(setB, out bool isUniversal);
+                if (!isUniversal)
+                {
+                    DisplayNotUniversalError(output_sets);
+                    return;
+                }
+
+                outcome_left = setA.Intersection(setB);
+                isFirstOption = false;
+            }
+
+            DisplaySetlawPropertiesOutcome(TypeOfLawProperty.Identity, outcome_left, outcome_right, setA, setB, isfirst_option: isFirstOption);
+
+            AnyKey(KeyType.Continue);
+        }//Identity
+        private static void Idempotence(ISetCollection<int> sets)
+        {
+            //ClearConsoleWindow();
+            ClearConsoleWindow();
+            Console.WriteLine("\t  Idempotence:");
+            Console.WriteLine("\t  ============");
+            Console.WriteLine();
+            Console.WriteLine("\t1.  A U A = A");
+            Console.WriteLine("\t2.  A \u2229 A = A");
+            Console.WriteLine("\tX. Exit");
+            Console.WriteLine();
             string option = Inputs.ReadLineString();
             if (option == "X" && option != "1" && option != "2")
                 return;
 
             //Read the sets
-            var output_sets = GetInputSetCollection(InputTypeFunction.Properties | InputTypeFunction.set_laws, sets, out Operation opr);
+            var output_sets = GetInputSetCollection(InputTypeFunction.Properties | InputTypeFunction.set_laws, sets, out Operation opr, numberOfSets:1);
+            if (opr == Operation.Cancelled)
+                return;
+
+            var setA = output_sets[0];
+            var outcomeleft = (option == "1") ? setA.Union(setA) : setA.Intersection(setA);
+
+            DisplaySetlawPropertiesOutcome(TypeOfLawProperty.Idemptotence, outcomeleft, setA , setA ,isfirst_option: option == "1");
+            AnyKey(KeyType.Continue);
+        }//Idempotence
+        private static void Dominance(ISetCollection<int> sets)
+        {
+            //ClearConsoleWindow();
+            ClearConsoleWindow();
+            Console.WriteLine("\t  Idempotence:");
+            Console.WriteLine("\t  ============");
+            Console.WriteLine();
+            Console.WriteLine("\t1.  A U Univeral = Univeral");
+            Console.WriteLine("\t2.  A \u2229 \u2205 = \u2205");
+            Console.WriteLine("\tX. Exit");
+            Console.WriteLine();
+            string option = Inputs.ReadLineString();
+            if (option == "X" && option != "1" && option != "2")
+                return;
+            Console.WriteLine("\t   A U Univeral = Univeral");
+            Console.WriteLine("\t   A \u2229 \u2205 = \u2205");
+            //Read the sets
+
+            List<ICSet<int>> output_sets;
+            Operation opr;
+            if (option == "1")
+                output_sets = GetInputSetCollection(InputTypeFunction.Properties | InputTypeFunction.set_laws, sets, out opr,islast_universal:true);
+            else
+            {
+                output_sets = GetInputSetCollection(InputTypeFunction.Properties | InputTypeFunction.set_laws, sets, out opr,numberOfSets:1);
+                output_sets.Add(new GenericSet<int>(settings));//Adding an empty set
+            }
             if (opr == Operation.Cancelled)
                 return;
 
             var setA = output_sets[0]; var setB = output_sets[1];
-            ICSet<int> outcomeleft, outcomeright;
-            bool isFirstOption = false;
+            ICSet<int> outcomeleft;
             if (option == "1")
             {
+                //Test if it is a universal set
+                if (!setB.IsUnivesalTo(setA))
+                {
+                    DisplayNotUniversalError(output_sets);
+                    return;
+                }
+
                 outcomeleft = setA.Union(setB);
-                outcomeright = setB.Union(setA);
-                isFirstOption = true;
             }
             else
-            {
                 outcomeleft = setA.Intersection(setB);
-                outcomeright = setB.Intersection(setA);
-            }
-            DisplaySetlawPropertiesOutcome(TypeOfLawProperty.Cummutativity, outcomeleft, outcomeright, setA, setB, isfirst_option: isFirstOption);
-        }
+
+            DisplaySetlawPropertiesOutcome(TypeOfLawProperty.Idemptotence, outcomeleft, setB, setA, setB, isfirst_option: option == "1");
+            AnyKey(KeyType.Continue);
+        }//Dominance
+        #endregion Laws implementation
         #endregion Set laws
+
 
         #region Clearing and reseting naming
         private static void ClearAllSests(ISetCollection<int> sets)
         {
-            Console.Clear();
+            ClearConsoleWindow();
             Console.WriteLine("\tClearing all sets");
             Console.WriteLine("\t=================");
             //Display warning
             DisplaSetsWarning(SetWarting.Clear);
             Console.WriteLine("\tY. To continue");
             Console.WriteLine("\tX. To Cancel");
-            string option = Console.ReadLine().ToUpper();
-            if (option.Length > 1)//Get the first character
-                option = option[0].ToString();
+
+            string option = Inputs.ReadLineString();
 
             if (option == "Y")
             {
@@ -1029,7 +1143,7 @@ namespace AdvancedSet
             bool success;
             do
             {
-                Console.Clear();
+                ClearConsoleWindow();
                 Console.WriteLine("\tResetting naming");
                 Console.WriteLine("\t================");
                 //DisplayResetNamingInfo();
@@ -1052,7 +1166,7 @@ namespace AdvancedSet
             } while (true);
             if (success)
             {
-                Console.Clear();
+                ClearConsoleWindow();
                 Console.WriteLine("\tNaming has been reset:");
                 Console.WriteLine();
                 //Display the old set with old naming
@@ -1075,12 +1189,13 @@ namespace AdvancedSet
         #region Learn more about sets
         private static void LearnMoreAboutSets()
         {
-            Console.Clear();
+            ClearConsoleWindow();
             Console.WriteLine("\tLearning about sets.........");
-            AnyKey();
+            AnyKey(KeyType.Continue);
         }//LearnMoreAboutSets
         #endregion Learn more about sets.
 
+        #region Clearing and stopping cursor
         private static void AnyKey(KeyType type)
         {
             string msg = $"Press any key to {type.ToString().ToLower()}";
@@ -1088,6 +1203,12 @@ namespace AdvancedSet
             Console.Write($"\t{msg}...");
             Console.ReadKey();
         }//AnyKey
+        private static void ClearConsoleWindow()
+        {
+            Console.Clear();
+            Console.WriteLine("\x1b[3J");
+            Console.Clear();
+        }//ClearConsoleWindow
+        #endregion Clearing and stopping cursor
     }//class
-
 }//namespace
