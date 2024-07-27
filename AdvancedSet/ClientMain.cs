@@ -23,6 +23,9 @@ namespace AdvancedSet
             Console.BackgroundColor = ConsoleColor.White;
             ClearConsoleWindow();
 
+            //Welcome/Information screen
+            Welcome();
+
             //Create the set collection
             ISetCollection<int> collection = new SetCollection<int>();
             Load(collection);
