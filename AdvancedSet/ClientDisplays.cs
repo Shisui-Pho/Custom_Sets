@@ -5,13 +5,44 @@ using SetLibrary.Operations;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-
+using System.IO;
 namespace AdvancedSet
 {
     //This client will be for displaying 
     public partial class Client
     {
         public delegate void delDisplayInfo_Func();
+
+        private static readonly string info_file_pdf = Path.Combine(Directory.GetCurrentDirectory(), "Files", "Sets - Information Document.pdf");
+        private static readonly string info_file_docx = Path.Combine(Directory.GetCurrentDirectory(), "Files", "Sets - Information Document.docx");
+        private static readonly string _dataFile = Path.Combine(Directory.GetCurrentDirectory(), "Files", "data.txt");
+
+        private static int max_set_length = 0;
+        private static void Welcome()
+        {
+            Console.WriteLine("\tWELCOME");
+            Console.WriteLine("\t=======");
+            Console.WriteLine("\tThis application is a more refined version of the \"Simple set\" application. You can find it here:");
+            Console.WriteLine("\tSource code : https://github.com/Shisui-Pho/Custom_Sets/tree/master/SimpleSets");
+            Console.WriteLine("\tApplication : https://github.com/Shisui-Pho/Custom_Sets/tree/master/SimpleSets/App");
+            Console.WriteLine();
+            Console.WriteLine();
+
+            Console.WriteLine("\tImprovements");
+            Console.WriteLine("\t============");
+            Console.WriteLine("\t1. Now you can nest elements as much as you want in any way.");
+            Console.WriteLine("\t2. You modify a given set by removing and adding elements.");
+            Console.WriteLine("\t3. More advanced set operations have been added.");
+            Console.WriteLine("\t3. More sets properties have been added.");
+            Console.WriteLine("\t4. Improved element sorting accuracy.");
+            Console.WriteLine("\t5. Improved set string evaluation.");
+            Console.WriteLine("\t6. Improved braces evaluation check.");
+            Console.WriteLine("\t7. Improved overall perfomance of the application.");
+
+            Console.WriteLine();
+            Console.WriteLine("\tThis application is title \"Advanced set\" which means the advanced version of \"Simple set\", You can found it here:");
+            Console.WriteLine("\tSource code : {}");
+        }//Welcome
         private static void DisplaySets(ISetCollection<int> collection, string header = "Current sets")
         {
             Console.WriteLine();
@@ -19,7 +50,7 @@ namespace AdvancedSet
             Console.WriteLine();
             foreach (Set item in collection)
             {
-                Console.WriteLine($"\t{item.Name.PadRight(5)} : {item.ElementString.PadRight(60)}  |{item.Name}| = {item.Cardinality}");
+                Console.WriteLine($"\t{item.Name.PadRight(5)} : {item.ElementString.PadRight(max_set_length + 10)}  |{item.Name}| = {item.Cardinality}");
             }//end foreach
             Console.WriteLine();
             Console.WriteLine();
@@ -60,6 +91,51 @@ namespace AdvancedSet
             sets.Add(set);
 
         }//AddTestData
+        private static void Load(ISetCollection<int> sets)
+        {
+            if (File.Exists(_dataFile))
+            {
+                string[] data = File.ReadAllLines(_dataFile);
+                bool isFirstTime = true;
+                foreach (var item in data)
+                {
+                    try
+                    {
+                        ICSet<int> set = new GenericSet<int>(item, settings);
+                        sets.Add(set);
+                    }
+                    catch
+                    {
+                        DisplayCouldNotLoadSetString(item, isFirstTime);
+                        isFirstTime = false;
+                    }//end catch
+                }//end forach
+            }//end if
+            else
+            {
+                Console.WriteLine("\tThe file \"{0}\" was not found.", _dataFile);
+                Console.WriteLine("\tTest data will be loaded instead.");
+                AddTestData(sets);
+            }
+            Console.WriteLine();
+            Console.WriteLine("\tLoaded {0} sets.", sets.Count);
+            MaxLength(sets);
+            AnyKey(KeyType.Continue);
+        }//Load
+        private static void Save(ISetCollection<int> collection)
+        {
+            using(StreamWriter wr = new StreamWriter(_dataFile, false))
+            {
+                for (int i = 0; i < collection.Count; i++)
+                    wr.WriteLine(collection[i].OriginalString);
+            }
+        }//Save
+        private static void DisplayCouldNotLoadSetString(string setString, bool isfirstTime = true)
+        {
+            if(isfirstTime) 
+                Console.WriteLine("\tCould not load the following sets:\n");
+            Console.WriteLine("\t{0}", setString);
+        }//DisplayCouldNotLoadSetString
         private static void DisplayNewSetHeader(ISetCollection<int> collection)
         {
             Console.Clear();
@@ -132,6 +208,7 @@ namespace AdvancedSet
             Console.WriteLine("\t8.  Clear all sets.");
             Console.WriteLine("\t9.  Reset set naming.");
             Console.WriteLine("\t10. Learn more about sets.");
+            Console.WriteLine("\t11. About the developer.");
             Console.WriteLine("\tX.  Exit.");
         }//DisplayMenuOptions
         private static void DisplaSetsWarning(SetWarting warning)
@@ -509,6 +586,17 @@ namespace AdvancedSet
                     max = item;
             }
             return max;
+        }
+        private static int MaxLength(ISetCollection<int> sets)
+        {
+            max_set_length = int.MinValue;
+            foreach (Set item in sets)
+            {
+                int newLength = item.ElementString.Length;
+                if (newLength > max_set_length)
+                    max_set_length = newLength;
+            }
+            return max_set_length;
         }
         private static void DisplayNotUniversalError(List<ICSet<int>> sets)
         {

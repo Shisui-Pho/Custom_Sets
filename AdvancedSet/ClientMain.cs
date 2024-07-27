@@ -4,6 +4,9 @@ using SetLibrary.Generic;
 using SetLibrary.Collections;
 using SetLibrary.Operations;
 using System.Collections.Generic;
+using System.IO;
+using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace AdvancedSet
 {
@@ -22,15 +25,15 @@ namespace AdvancedSet
 
             //Create the set collection
             ISetCollection<int> collection = new SetCollection<int>();
-            AddTestData(collection);
+            Load(collection);
 
             //Call the menu
             Menu(collection);
             //DisplaySets(collection);
             //AddNewSet(collection);
             //DisplaySets(collection);
+            Save(collection);
         }//Main
-        
         public static void Menu(ISetCollection<int> sets)
         {
             //Option
@@ -58,7 +61,7 @@ namespace AdvancedSet
                 switch (menuOption)
                 {
                     case 1: AddNewSet(sets); break; 
-                    case 2:RemoveSet(sets); break; 
+                    case 2: RemoveSet(sets); break; 
                     case 3: ModifySet(sets); break;
                     case 4: CheckForSubsets(sets); break;
                     case 5: CheckForElement(sets); break; 
@@ -67,10 +70,37 @@ namespace AdvancedSet
                     case 8: ClearAllSests(sets); break; 
                     case 9:ResetNaming(sets); break; 
                     case 10: LearnMoreAboutSets(); break;
+                    case 11: AboutDeveloper(); break;
                     default:break;
                 }//end switch
             } while (option != "X");
         }//Menu
+
+        private static void AboutDeveloper()
+        {
+            ClearConsoleWindow();
+
+            Console.WriteLine("\tDeveloper Information");
+            Console.WriteLine("\t====================");
+            Console.WriteLine();
+            Console.WriteLine("\tPersonal Information:");
+            Console.WriteLine("\tName               : Phiwokwakhe");
+            Console.WriteLine("\tSurname            : Khathwane");
+            Console.WriteLine("\tDate Of Birth      : 03 November 2003");
+            Console.WriteLine();
+            Console.WriteLine("\tSocial media");
+            Console.WriteLine("\tLinkedIn           : https://www.linkedin.com/in/phiwokwakhe-khathwane-887175245");
+            Console.WriteLine("\tGithub             : https://github.com/Shisui-Pho");
+            Console.WriteLine("\tStackoverflow      : https://stackoverflow.com/users/19666670/phiwo");
+            Console.WriteLine();
+            Console.WriteLine("\tEducation(Current student):");
+            Console.WriteLine("\tQualification      :  BSc(IT) majoring in Computer Science and Mathematics");
+            Console.WriteLine("\tInstitution        :  The University of the Free State");
+            Console.WriteLine("\tStarted            :  2023");
+            Console.WriteLine("\tExpected to finish :  2025");
+            Console.WriteLine();
+            AnyKey(KeyType.Continue);
+        }//AboutDeveloper
 
         #endregion Main method and menu
 
@@ -135,6 +165,10 @@ namespace AdvancedSet
                 if (option == 'Y')
                 {
                     sets.Add(newset);
+                    //Set the max length
+                    int new_length = newset.ElementString.Length;
+                    if (new_length > max_set_length)
+                        max_set_length = new_length;
                     Console.WriteLine("\n\tSet was added successfully.");
                 }
                 else
@@ -202,6 +236,9 @@ namespace AdvancedSet
                 sets.Remove(set);//Remove the set from the collection
                 Console.WriteLine();
                 Console.WriteLine("\tSet \"{0}\" has been removed.", setName);
+
+                //Reset the max length
+                MaxLength(sets);
             }
             else
             {
@@ -237,7 +274,10 @@ namespace AdvancedSet
                 else
                 {
                     //Modify the set.
-                    ModifySet(set, name);
+                    ModifySet(set, name, out bool possibleChnages);
+
+                    if (possibleChnages)
+                        MaxLength(sets);
                 }//end else
             } while (true);
             AnyKey();
@@ -262,10 +302,11 @@ namespace AdvancedSet
                 return default;
             }
         }//GetElement
-        private static void ModifySet(ICSet<int> set,string name)
+        private static void ModifySet(ICSet<int> set,string name, out bool possibleChanges)
         {
             bool success;
             int elem;
+            possibleChanges = false;
             do
             {
                 ClearConsoleWindow();
@@ -304,7 +345,11 @@ namespace AdvancedSet
                             Console.Write("\tRemove the element (Y = Yes/ N = No) : ");
                             string confirm = Console.ReadKey().KeyChar.ToString().ToUpper();
                             if (confirm == "Y")
+                            {
                                 set.RemoveElement(tree);//Remove the tree
+                                possibleChanges = true;
+                            }
+                                
                         }
                         else
                         {
@@ -319,7 +364,10 @@ namespace AdvancedSet
                             Console.Write("\tRemove the element (Y = Yes/ N = No) : ");
                             string confirm = Console.ReadKey().KeyChar.ToString().ToUpper();
                             if (confirm == "Y")
+                            {
                                 set.RemoveElement(elem);//Remove the tree
+                                possibleChanges = true;
+                            }
                         }
                         break;
                     case "1":
@@ -331,16 +379,25 @@ namespace AdvancedSet
                         {
                             var tree = GetElement(element);
                             if(tree != null)
+                            {
                                 set.AddElement(tree);
+                                possibleChanges = true;
+                            }
+                                
                             continue;
                         }
 
                         success = int.TryParse(element, out elem);
                         if (success)
+                        {
                             set.AddElement(elem);
+                            possibleChanges = true;
+                        }
+                            
                         break;
                     default:
                         break;
+
                 }
             } while (true);
         }//EditingSet
@@ -1190,7 +1247,20 @@ namespace AdvancedSet
         private static void LearnMoreAboutSets()
         {
             ClearConsoleWindow();
-            Console.WriteLine("\tLearning about sets.........");
+
+            if (File.Exists(info_file_docx))
+            {
+                Process.Start(info_file_docx);
+                AnyKey(KeyType.Continue);
+                return;
+            }
+            if (File.Exists(info_file_pdf))
+            {
+                Process.Start(info_file_pdf);
+                AnyKey(KeyType.Continue);
+                return;
+            }
+            DisplayError(String.Format("\tNeither of the following files were found: \n\t{0} \n\t{1}", info_file_pdf, info_file_docx));
             AnyKey(KeyType.Continue);
         }//LearnMoreAboutSets
         #endregion Learn more about sets.
