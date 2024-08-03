@@ -20,20 +20,6 @@ namespace AdvancedSet
         private static int max_set_length = 0;
         private static void Welcome()
         {
-            Console.WriteLine("\tWELCOME");
-            Console.WriteLine("\t=======");
-            Console.WriteLine("\tThis application is a more refined version of the \"Simple set\" application. You can find it here:");
-            Console.WriteLine("\tSource code : https://github.com/Shisui-Pho/Custom_Sets/tree/master/SimpleSets");
-            Console.WriteLine("\tApplication : https://github.com/Shisui-Pho/Custom_Sets/tree/master/SimpleSets/App");
-            Console.WriteLine("\tThis application is title \"Advanced set\" which means the advanced version of \"Simple set\". You can find it here:");
-            Console.WriteLine("\tSource code : https://github.com/Shisui-Pho/Custom_Sets/tree/master/AdvancedSet");
-            Console.WriteLine("\tApplication : https://github.com/Shisui-Pho/Custom_Sets/tree/master/AdvancedSet/App");
-            Console.WriteLine("\tThe \"Advanced set\" uses the \"SetLibrary\" project(library) which is developed by the same person. You can find it here:");
-            Console.WriteLine("\tSource code : https://github.com/Shisui-Pho/Advance-Custom-Set/tree/master/SetLibrary");
-            Console.WriteLine("\tDll file    : https://github.com/Shisui-Pho/Advance-Custom-Set/tree/master/SetLibrary/Dll");
-            Console.WriteLine();
-            Console.WriteLine();
-
             Console.WriteLine("\tImprovements");
             Console.WriteLine("\t============");
             Console.WriteLine("\t1. Now you can nest elements as much as you want in any way(biggest improvement).");
