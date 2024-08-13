@@ -83,27 +83,7 @@ namespace AdvancedSet
         {
             ClearConsoleWindow();
 
-            Console.WriteLine("\tApplication developer Information");
-            Console.WriteLine("\t====================");
-            Console.WriteLine();
-            Console.WriteLine("\tPersonal Information:");
-            Console.WriteLine("\tName               : Phiwokwakhe");
-            Console.WriteLine("\tSurname            : Khathwane");
-            Console.WriteLine("\tDate Of Birth      : 03 November 2003");
-            Console.WriteLine();
-            Console.WriteLine("\tSocial media");
-            Console.WriteLine("\tLinkedIn           : https://www.linkedin.com/in/phiwokwakhe-khathwane-887175245");
-            Console.WriteLine("\tGithub             : https://github.com/Shisui-Pho");
-            Console.WriteLine("\tStackoverflow      : https://stackoverflow.com/users/19666670/phiwo");
-            Console.WriteLine();
-            Console.WriteLine("\tEducation(Student):");
-            Console.WriteLine("\tQualification      :  BSc(IT) majoring in Computer Science and Mathematics");
-            Console.WriteLine("\tInstitution        :  The University of the Free State");
-            Console.WriteLine("\tStarted            :  2023");
-            Console.WriteLine("\tExpected to finish :  2025");
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("\tThe documents were written by {0} and edited by Phiwokwakhe.", "Tshepo Lekgetho");
+           
             AnyKey(KeyType.Continue);
         }//AboutDeveloper
 
