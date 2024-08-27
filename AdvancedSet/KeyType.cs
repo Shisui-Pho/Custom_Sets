@@ -5,6 +5,7 @@
     {
         Exit,
         Continue,
-        Retry
+        Retry,
+        Menu
     }
 }

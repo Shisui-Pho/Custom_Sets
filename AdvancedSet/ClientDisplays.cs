@@ -156,10 +156,11 @@ namespace AdvancedSet
         }//DisplayError
         private static void AnyKey(string msg = "Press any key to return to the main menu....")
         {
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.Write("\t{0}", msg);
-            Console.ReadKey();
+            AnyKey(KeyType.Menu, msg);
+            //Console.WriteLine();
+            //Console.WriteLine();
+            //Console.Write("\t{0}", msg);
+            //Console.ReadKey();
         }//AnyKey
         private static string ReadSetString(string sPrompt, string attempt = "")
         {

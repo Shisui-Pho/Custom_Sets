@@ -161,7 +161,7 @@ namespace AdvancedSet
                     Console.WriteLine("\n\tSet was not added.");
                 }
             }
-            AnyKey();
+            AnyKey( KeyType.Continue);
         }//AddNewSet
         #endregion Adding new set
 
@@ -1251,9 +1251,11 @@ namespace AdvancedSet
         #endregion Learn more about sets.
 
         #region Clearing and stopping cursor
-        private static void AnyKey(KeyType type)
+        private static void AnyKey(KeyType type, string message = "")
         {
-            string msg = $"Press any key to {type.ToString().ToLower()}";
+            string msg = message;
+            if(message == "")
+                msg = $"Press any key to {type.ToString().ToLower()}";
             Console.WriteLine();
             Console.Write($"\t{msg}...");
             Console.ReadKey();
